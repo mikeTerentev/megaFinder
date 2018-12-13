@@ -100,10 +100,24 @@
          <property name="text">
           <string>Filename</string>
          </property>
+         <property name="background">
+          <color>
+           <red>236</red>
+           <green>232</green>
+           <blue>173</blue>
+          </color>
+         </property>
         </column>
         <column>
          <property name="text">
-          <string>Dir</string>
+          <string>Directory</string>
+         </property>
+         <property name="background">
+          <color>
+           <red>229</red>
+           <green>186</green>
+           <blue>125</blue>
+          </color>
          </property>
         </column>
        </widget>

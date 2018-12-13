@@ -32,6 +32,10 @@ public:
     }
 
 
+    void setTextViewer(TextViewer* tv){
+        textviewer = tv;
+    }
+
     void addFilesFromDir(QPair<QString, QList<QString> > &path);
 
     void removeFile(QTreeWidgetItem *child);
@@ -47,23 +51,20 @@ public:
         selectedFile = x;
     }
 
-    void setMainWindow(main_window* mv){
-        mainwindow = mv;
-    }
-
     void addFilesFromDirs(QVector<QPair<QString, QList<QString> > > &list);
-
     void deleteDir(QString &dir);
 public slots:
+    void onTreeWidgetClicked();
 
     void fileSelected(QTreeWidgetItem *curFile);
 
     void keyPressEvent(QKeyEvent *event);
 
+     void show();
 private:
-
+     
     QCommonStyle style;
-    main_window* mainwindow;
+    TextViewer* textviewer;
     QTreeWidgetItem *selectedFile = nullptr;
     void setItemParameters(QTreeWidgetItem *item, QFileInfo &file_info);
 };

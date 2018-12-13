@@ -9,7 +9,7 @@ main_window::main_window(QWidget *parent)
         :  QMainWindow(parent) ,ui(new Ui::MainWindow){
     ui->setupUi(this);
     ui->dirWidget->setMainWindow(this);
-    ui->treeWidget->setMainWindow(this);
+    ui->treeWidget->setTextViewer(ui->textViewer);
     ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->NAME_COL,  QHeaderView::Stretch);
     ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->DIR_COL, QHeaderView::Stretch);
    //  ui->treeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
@@ -23,7 +23,7 @@ main_window::main_window(QWidget *parent)
     connect(ui->actionAbout, &QAction::triggered, this, &main_window::show_about_dialog);
 
     connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem * , int)), this, SLOT(fileClicked(QTreeWidgetItem * )));
-    connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem * , QTreeWidgetItem * )), ui->treeWidget, SLOT(fileSelected(QTreeWidgetItem * )));
+    //connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem * , QTreeWidgetItem * )), this, SLOT(fileClicked(QTreeWidgetItem * )));
 
     connect(ui->lineEdit,SIGNAL(returnPressed()),this,SLOT(changePattern()));
     connect(ui->nextButton,SIGNAL(pressed()),this,SLOT(next()));
@@ -85,17 +85,13 @@ void main_window::deleteDir(QString dir){
 
 void main_window::fileClicked(QTreeWidgetItem * widget){
     ui->treeWidget->fileSelected(widget);
-    if ( widget->text(0).isEmpty()){
+    ui->textViewer->openFile(getItemName(selectedFile));
+    if (selectedFile->text(NAME_COL).isEmpty()){
         return;
     }
-    openFile(ui->treeWidget->getItemName(widget));
-}
-
-void main_window::openFile(QString path){
-    QFileInfo f(path);
+    QFileInfo f(getItemName(selectedFile));
     if(f.isDir()) return;
-    ui->textViewer->openFile(path);
-    ui->textViewer->search();
+    ui->textviewer->search();
     findNextFile();
 }
 

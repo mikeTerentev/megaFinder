@@ -11,7 +11,7 @@
 
     QString TBufferedReader::nextTrigram(){
         if (pointer + 2 >= line.size()){
-           line = stream->readLine();
+           line = stream->readAll();
            pointer = 0;
         }
         QString res = line.mid(pointer, 3);

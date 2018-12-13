@@ -38,8 +38,7 @@ void MyTreeWidget::deleteDir(QString& dir){
 }
 
 void MyTreeWidget::fileSelected(QTreeWidgetItem *curFile) {
-     selectedFile = curFile;
-     qDebug()<<"changed selected item";
+   selectedFile = curFile;
 }
 
 
@@ -53,6 +52,14 @@ void MyTreeWidget::removeFile(QTreeWidgetItem *child) {
     }
 }
 
+
+void MyTreeWidget::show(){
+
+}
+
+
+
+
 QString MyTreeWidget::getItemName(QTreeWidgetItem *item) {
 
     return QString("%1/%2").arg(item->text(DIR_COL), item->text(NAME_COL));
@@ -61,11 +68,12 @@ QString MyTreeWidget::getItemName(QTreeWidgetItem *item) {
 
 void MyTreeWidget::keyPressEvent(QKeyEvent * event){
     QString x =event->text();
-    qDebug() << Qt::Key(event->key());
-    QTreeWidget::keyPressEvent(event);
     if ( event->key() == Qt::Key_Return){
-       mainwindow->openFile(getItemName(selectedFile));
+        mainwindow->fileClicked(selectedFile);
     }
+    qDebug() << Qt::Key(event->key());
+
+    QTreeWidget::keyPressEvent(event);
 }
 void MyTreeWidget::setItemParameters(QTreeWidgetItem *item, QFileInfo &file_info) {
     item->setText(DIR_COL, file_info.path());

@@ -7,7 +7,7 @@
 #include <qdiriterator.h>
 #include <QDebug>
 #include <QList>
-
+#include <QPair>
 class PatternSearcher
 {
 public:
@@ -17,16 +17,17 @@ public:
     QSet<QString> getDirectories(){
         return directories;
     }
-    QMap<QString,QSet<QString>> getTrigramData(){
+    QMap<QString,QMap<QString,QSet<QString>>> getTrigramData(){
         return trigramsData;
     }
     bool addFileDir(QString dir);
     void deleteDir(QString dir);
     void indexDir(QString dir);
-    QList<QString> find(QString& pattern);
+    QVector<QPair<QString, QList<QString> > > find(QString pattern);
 private:
     QSet<QString> directories;
-    QMap<QString,QSet<QString>> trigramsData;
+    QMap<QString,QMap<QString,QSet<QString>>> trigramsData;
+    //<dir,<file, trigrams>>
 };
 
 #endif // PATTERNSEARCHER_H

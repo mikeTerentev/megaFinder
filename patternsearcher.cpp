@@ -1,46 +1,74 @@
 #include "fileindexer.h"
 #include "patternsearcher.h"
 
-
-
-PatternSearcher::PatternSearcher()
-{
-
+PatternSearcher::PatternSearcher(){
+    //no actions
 }
 
 bool PatternSearcher::addFileDir(QString path){
-     if (directories.contains(path)){
-       return false;
+     for (auto& dir : directories){
+         if (dir.contains(path)){
+             return false;
+         }
      }
-       directories.insert(path);
-       return true;
-   }
+     directories.insert(path);
+      qDebug()<<"add : "<< path<<"Map size: "<<directories.size();
+     return true;
+}
 
- void PatternSearcher::deleteDir(QString dir){
+void PatternSearcher::deleteDir(QString dir){
      directories.remove(dir);
+     qDebug()<<"remove : "<< dir<<"Map size: "<<directories.size();
      trigramsData.remove(dir);
- }
+}
 
- void PatternSearcher::indexDir(QString path){
-     QDirIterator it(path,QDir::Hidden | QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+ void PatternSearcher::indexDir(QString dir){
+     QMap<QString,QSet<QString>> dirData;
+     QDirIterator it(dir, QDir::Hidden | QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
         while (it.hasNext()) {
             QFileInfo  file =(it.next());
             FileIndexer indexer;
             QString fileDir(file.absoluteFilePath());
             qDebug()<<fileDir;
-            if (file.isSymLink()) continue;
-            trigramsData.insert(fileDir, indexer.findTrigrams(fileDir));
+            if (file.isSymLink()) {
+                continue;
+            }
+            dirData.insert(fileDir, indexer.findTrigramsOfFile(fileDir));
         }
+        trigramsData.insert(dir,dirData);
  }
 
- QList<QString> PatternSearcher::find(QString& pattern){
-     QList<QString> result;
-     for(auto cur = trigramsData.begin(); cur != trigramsData.end(); cur++){
-         QString filePath = cur.key();
-         if(cur.value().contains(pattern)){
-             result.append(filePath);
-             qDebug()<<"Found:"<<filePath;
-         }
+ QVector<QPair<QString,QList<QString>>> PatternSearcher::find(QString pattern){
+     QVector<QPair<QString,QList<QString>>> result;
+     FileIndexer indexer;
+     QSet<QString> patternTrigrams =indexer.findTrigramsOfString(pattern);
+     for (auto curDir = trigramsData.begin(); curDir != trigramsData.end(); curDir++){
+         QList<QString> filesList;
+         for (auto curFile = curDir.value().begin(); curFile != curDir.value().end(); curFile++){
+             bool isMatch = true;
+             QString filePath = curFile.key();
+             if( pattern.size() >= 3){
+                 for (auto& patternTrigram : patternTrigrams){
+                     if (!curFile.value().contains(patternTrigram)){
+                         isMatch = false;
+                     }
+                 }
+             }
+             else {
+                  isMatch = false;
+                  for (auto& fileTrigram : curFile.value()){
+                      if (fileTrigram.contains(pattern)){
+                         isMatch = true;
+                         continue;
+                      }
+                  }
+             }
+             if (isMatch){
+                 filesList.append(filePath);
+                 qDebug()<<"Found:"<<filePath;
+             }
+          }
+        result.push_back(qMakePair(curDir.key(),filesList));
      }
      return result;
  }

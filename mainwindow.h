@@ -30,9 +30,11 @@ public:
     void findNextFile();
     public
     slots:
+    void changePattern();
     void addFileDirectory();
     void  find();
     void fileClicked(QTreeWidgetItem *widget);
+    void openFile(QString path);
     private
     slots:
     void show_about_dialog();   
@@ -40,6 +42,7 @@ public:
 
     void next();
 private:
+    QString pattern;
     FileIndexer indexer;
     PatternSearcher searcher;
     QCommonStyle style;
