@@ -14,6 +14,7 @@ public:
     ~TBufferedReader();
     QString nextTrigram();
     bool hasNextTrigram();
+    bool isTextFile();
 private:
     QFile* file;
     QTextStream* stream;

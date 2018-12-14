@@ -1,6 +1,8 @@
 #ifndef TRIGRAMSSEARCHER_H
 #define TRIGRAMSSEARCHER_H
 
+#include "fileindexer.h"
+
 #include <qstring.h>
 #include <QMap>
 #include <QString>
@@ -26,17 +28,21 @@ public:
    bool isSearchCompleted(){
        return isCompleted;
    }
-
+   QList<QString> getDirectories(){
+       return directories;
+   }
 public slots:
     void indexDir();
-
+    QSet<QString> updateFile();
 
 signals:
      void fileIndexing(QString);
      void finished(int);
 
 private:
+    FileIndexer indexer;
     QMap<QString,QSet<QString>> dirData;
+    QList<QString> directories;
     QString dir;
     bool isCompleted = false;
 };

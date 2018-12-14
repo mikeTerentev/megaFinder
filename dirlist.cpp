@@ -22,7 +22,7 @@ void DirList::fileClicked(QTreeWidgetItem * item){
 void DirList::keyPressEvent(QKeyEvent * event){
     QString x =event->text();
     if ( event->key() == Qt::Key_Backspace){
-        mainwindow->deleteDir(selectedDir->text(0));
+        mainwindow->removeDirectory(selectedDir->text(0));
     }
     if ( event->key() == Qt::Key_N){
         mainwindow->addFileDirectory();

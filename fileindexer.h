@@ -23,7 +23,7 @@ public:
     {
         pattern = text;
     }
-    QSet<QString> findTrigramsOfString(QString line);
+    QSet<QString> findTrigramsOfString(const QString& line);
 private:
    QSet<QString> getDirectories(){
         return directories;
@@ -34,7 +34,7 @@ private:
     QString pattern;
     QList<QString> foundFiles;
 public slots:
-    QSet<QString> findTrigramsOfFile(QString file);
+    QSet<QString> findTrigramsOfFile(const QString& file);
     void indexDir(const QString &dir);
 };
 

@@ -35,9 +35,6 @@ void TextViewer::next(){
    QTextCursor cursor = textCursor();
    cursor.clearSelection();
    setTextCursor(cursor);
-  /* QTextEdit::ExtraSelection extra;
-   extra.format.setForeground(Qt::red);
-   extraSelections.pop_back();*/
    if (!find(line) && amount != 0){
        moveCursor(QTextCursor::Start);
        currentUsage = 0;
@@ -47,11 +44,12 @@ void TextViewer::next(){
     textCursor().select(QTextCursor::BlockUnderCursor);
 }
 
-void TextViewer::openFile(QString dir){
-    QFile file(dir);
+void TextViewer::openFile(QString path){
+    filePath = path;
+    QFile file(filePath);
     if(!file.open(QFile::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "Can't open file",
-                             QString("File \n\n %1 \n\n can't be opened.").arg(dir),
+                             QString("File \n\n %1 \n\n can't be opened.").arg(filePath),
                              QMessageBox::Ok);
     }
     QTextStream ReadFile(&file);

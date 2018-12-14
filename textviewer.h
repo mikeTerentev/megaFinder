@@ -13,7 +13,7 @@ class TextViewer : public QTextEdit
      Q_OBJECT
 public:
     TextViewer(QWidget *parent = nullptr):QTextEdit(parent){
-       // setReadOnly(true);
+        setReadOnly(true);
         moveCursor(QTextCursor::Start);
     }
     ~TextViewer()=default;
@@ -31,8 +31,11 @@ public:
     int getCurrentUsage(){
         return currentUsage;
     }
+    const QString& getFilePath(){
+        return filePath;
+    }
 public slots:
-    void openFile(QString dir);
+    void openFile(QString path);
 
     void next();
     void enableFlag();
@@ -41,6 +44,7 @@ private:
     bool isChanged = false;
     int amount, currentUsage = 0;
     QString line;
+    QString filePath;
     QList<QTextEdit::ExtraSelection> extraSelections;
     QColor color = QColor(Qt::yellow).lighter(120);
 

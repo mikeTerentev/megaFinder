@@ -1,4 +1,3 @@
-#include "fileindexer.h"
 #include "trigramssearcher.h"
 
 
@@ -6,8 +5,7 @@
 
 void TrigramsSearcher::indexDir(){
      qDebug()<<"add : "<< dir <<"Map size inc";
-     FileIndexer indexer;
-    QDirIterator it(dir, QDir::Hidden | QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+    QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
        while (it.hasNext()) {
            if (QThread::currentThread()->isInterruptionRequested()){
               emit finished(QDialog::Accepted);
@@ -15,13 +13,21 @@ void TrigramsSearcher::indexDir(){
            }
            QFileInfo  file =(it.next());
            emit fileIndexing(file.absoluteFilePath());
-           QString fileDir(file.absoluteFilePath());
-           qDebug()<<fileDir;
+           QString filePath(file.absoluteFilePath());
+           qDebug()<<filePath;
            if (file.isSymLink()) {
                continue;
            }
-           dirData.insert(fileDir, indexer.findTrigramsOfFile(fileDir));
+           auto fileData = indexer.findTrigramsOfFile(filePath);
+           if (!fileData.isEmpty()){
+              dirData.insert(filePath, fileData);
+              directories.append(filePath);
+           }
        }
        isCompleted = true;
        emit finished(QDialog::Accepted);
+}
+
+QSet<QString> TrigramsSearcher::updateFile(){
+    return indexer.findTrigramsOfFile(dir);
 }

@@ -53,7 +53,7 @@ public:
 
     void addFilesFromDirs(QVector<QPair<QString, QList<QString> > > &list);
 
-    void deleteDir(QString &dir);
+    void deleteDir(const QString &dir);
 public slots:
 
     void fileSelected(QTreeWidgetItem *curFile);

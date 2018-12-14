@@ -12,6 +12,7 @@
 #include <qmainwindow.h>
 #include <qcommonstyle.h>
 #include <QTreeWidgetItem>
+#include <QFileSystemWatcher>
 
 
 namespace Ui {
@@ -23,7 +24,7 @@ class main_window : public QMainWindow {
 
 public:
 
-    void deleteDir(QString dir);
+    void removeDirectory(QString dir);
     explicit main_window(QWidget *parent = nullptr);
 
     ~main_window();
@@ -32,18 +33,21 @@ public:
     void findNextFile();
     public
     slots:
+    void updateFile(QString path);
+    void updateDirectory(QString dir);
     void changePattern();
-    void addFileDirectory();
     void  find();
     void fileClicked(QTreeWidgetItem *widget);
     void openFile(QString path);
     void save();
+    void addFileDirectory();
     private
        slots:
     void show_about_dialog();   
 
     void next();
 private:
+    QFileSystemWatcher watcher;
     TrigramsSearcher* searcher;
     TrigramsRepository trigramsRepository;
     QString pattern;

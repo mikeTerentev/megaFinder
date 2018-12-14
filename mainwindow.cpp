@@ -11,8 +11,8 @@ main_window::main_window(QWidget *parent)
     ui->setupUi(this);
     ui->dirWidget->setMainWindow(this);
     ui->treeWidget->setMainWindow(this);
-    ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->NAME_COL,  QHeaderView::Stretch);
-    ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->DIR_COL, QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->NAME_COL,  QHeaderView::ResizeToContents);
+    ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->DIR_COL, QHeaderView::Stretch);
    //  ui->treeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
    // ui->lineEdit->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     ui->lineEdit->setFixedHeight(40);
@@ -28,15 +28,18 @@ main_window::main_window(QWidget *parent)
     connect(ui->treeWidget, SIGNAL(itemDoubleClicked(QTreeWidgetItem * , int)), this, SLOT(fileClicked(QTreeWidgetItem * )));
     connect(ui->treeWidget, SIGNAL(currentItemChanged(QTreeWidgetItem * , QTreeWidgetItem * )), ui->treeWidget, SLOT(fileSelected(QTreeWidgetItem * )));
 
-     connect(ui->lineEdit,SIGNAL(textChanged()),this,SLOT(changePattern()));
-   // connect(ui->findButton,SIGNAL(clicked()),this,SLOT(changePattern()));
+    connect(ui->lineEdit,SIGNAL(textChanged()),this,SLOT(changePattern()));
+  
     connect(ui->nextButton,SIGNAL(pressed()),this,SLOT(next()));
     connect(ui->textViewer,SIGNAL(textChanged()),ui->textViewer,SLOT(enableFlag()));
 
     connect(ui->dirWidget, SIGNAL(itemClicked(QTreeWidgetItem *,int)), ui->dirWidget, SLOT(fileClicked(QTreeWidgetItem * )));
     connect(ui->dirWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem * )), ui->dirWidget, SLOT(fileClicked(QTreeWidgetItem * )));
 
-    connect(ui->addFileButton, SIGNAL(clicked()),this,SLOT(addFileDirectory()));
+    connect(ui->addFileButton, SIGNAL(clicked()),this, SLOT(addFileDirectory()));
+
+    connect(&watcher,SIGNAL(fileChanged(QString)),this, SLOT(updateFile(QString)));
+    connect(&watcher,SIGNAL(directoryChanged(QString)),this, SLOT(updateDirectory(QString)));
 
 }
 
@@ -75,7 +78,6 @@ void main_window::next(){
 
 void main_window::addFileDirectory(){
     clear();
-
     QString dir = QFileDialog::getExistingDirectory(this, "Select Directory for Scanning",QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (!trigramsRepository.canAddDir(dir)){
         QMessageBox::warning(this, "Directory has already added",QString("Directory \n\n %1 \n\n has already addFileed.").arg(dir), QMessageBox::Ok);
@@ -102,19 +104,48 @@ void main_window::addFileDirectory(){
 }
 void main_window::save(){
       if(searcher->isSearchCompleted()){
-          ui->dirWidget->addFileDir(searcher->getDir());
+          QString curDir = searcher->getDir();
+          ui->dirWidget->addFileDir(curDir);
+          trigramsRepository.insert(curDir,searcher->getData());
+          watcher.addPaths(searcher->getDirectories());
+          watcher.addPath(curDir);
+          qDebug()<<"Watching directories : "<<watcher.directories().size()<<"files : "<<watcher.files().size();
+          find();
       }
-    trigramsRepository.insert(searcher->getDir(),searcher->getData());
-    find();
 }
 
-void main_window::deleteDir(QString dir){
+void main_window::removeDirectory(const QString dir){
+    watcher.removePath(dir);
+    QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+     while (it.hasNext()) {
+        QFileInfo file = it.next();
+        if (file.isSymLink()) {
+            continue;
+        }
+        watcher.removePath(file.absoluteFilePath());
+        qDebug()<<"remove file : "<< file.absoluteFilePath();
+     }
+     qDebug()<<"Watching directories : "<<watcher.directories().size()<<"files : "<<watcher.files().size();
     trigramsRepository.deleteDir(dir);
     ui->dirWidget->deleteDir(dir);
     ui->treeWidget->deleteDir(dir);
     ui->textViewer->clear();
     ui->foundAmountLabel->clear();
 }
+
+void main_window::updateFile(QString path){
+   TrigramsSearcher localSearcher(path);
+   trigramsRepository.insertFile(path,localSearcher.updateFile());
+   if(ui->textViewer->getFilePath() == path){
+       ui->textViewer->openFile(path);
+       QMessageBox::warning(this, "Update",QString("File \n\n %1 \n\n was updated").arg(path), QMessageBox::Ok);
+   }
+}
+
+void main_window::updateDirectory(QString dir){
+
+}
+
 
 void main_window::clear(){
     ui->treeWidget->clear();

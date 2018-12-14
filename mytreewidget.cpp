@@ -27,7 +27,7 @@ void MyTreeWidget::addFilesFromDirs(QVector<QPair<QString,QList<QString>>>& list
     }
 }
 
-void MyTreeWidget::deleteDir(QString& dir){
+void MyTreeWidget::deleteDir(const QString& dir){
       QTreeWidgetItemIterator it(this);
       while(*it){
           if ((*it)->text(DIR_COL) == dir){
