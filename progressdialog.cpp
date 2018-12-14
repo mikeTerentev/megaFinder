@@ -4,12 +4,25 @@
 
 ProgressDialog::ProgressDialog(QThread* searchThread, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ProgressDialog)
+    ui(new Ui::ProgressDialog),
+    searchThread(searchThread)
 {
     ui->setupUi(this);
+    connect(ui->stopSearchButton, SIGNAL(clicked()), this, SLOT(stopSearch()));
+    //ui->progressBar->setValue(0);
+    ui->label->setText("Scaning directory..");
 }
 
 ProgressDialog::~ProgressDialog()
 {
     delete ui;
+}
+
+void ProgressDialog::stopSearch() {
+    this->done(0);
+    searchThread->requestInterruption();
+}
+
+void ProgressDialog::update(QString message) {
+    ui->label->setText(message);
 }

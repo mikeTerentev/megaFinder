@@ -8,26 +8,26 @@
 #include <QDebug>
 #include <QList>
 #include <QPair>
-class PatternSearcher
+#include <QThread>
+class TrigramsRepository
 {
+
 public:
 
-    PatternSearcher();
+    TrigramsRepository();
 
-    QSet<QString> getDirectories(){
-        return directories;
-    }
     QMap<QString,QMap<QString,QSet<QString>>> getTrigramData(){
         return trigramsData;
     }
-    bool addFileDir(QString dir);
+    bool canAddDir(QString path);
     void deleteDir(QString dir);
-    void indexDir(QString dir);
+    void insert(QString dir, QMap<QString,QSet<QString>> tdata);
     QVector<QPair<QString, QList<QString> > > find(QString pattern);
+
 private:
-    QSet<QString> directories;
     QMap<QString,QMap<QString,QSet<QString>>> trigramsData;
     //<dir,<file, trigrams>>
+
 };
 
 #endif // PATTERNSEARCHER_H

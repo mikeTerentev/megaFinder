@@ -4,7 +4,9 @@
 
 
 #include "fileindexer.h"
-#include "patternsearcher.h"
+#include "progressdialog.h"
+#include "trigramsrepository.h"
+#include "trigramssearcher.h"
 
 #include <memory>
 #include <qmainwindow.h>
@@ -35,18 +37,21 @@ public:
     void  find();
     void fileClicked(QTreeWidgetItem *widget);
     void openFile(QString path);
+    void save();
     private
-    slots:
+       slots:
     void show_about_dialog();   
-
 
     void next();
 private:
+    TrigramsSearcher* searcher;
+    TrigramsRepository trigramsRepository;
     QString pattern;
     FileIndexer indexer;
-    PatternSearcher searcher;
+    ProgressDialog* progressWindow;
     QCommonStyle style;
     std::unique_ptr <Ui::MainWindow> ui;
+    void clear();
 };
 
 #endif // MAINWINDOW_H

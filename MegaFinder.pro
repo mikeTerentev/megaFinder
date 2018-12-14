@@ -27,25 +27,27 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
     mainwindow.cpp \
+    tbufferedreader.cpp \
     mytreewidget.cpp \
     progressdialog.cpp \
-    textviewer.cpp \
-    dirlist.cpp \
-    tbufferedreader.cpp \
     fileindexer.cpp \
-    patternsearcher.cpp
+    dirlist.cpp \
+    textviewer.cpp \
+    trigramsrepository.cpp \
+    trigramssearcher.cpp
 
 
 HEADERS += \
     mainwindow.h \
-    mytreewidget.h \
     action.h \
-    progressdialog.h \
-    textviewer.h \
     dirlist.h \
-    tbufferedreader.h \
     fileindexer.h \
-    patternsearcher.h
+    mytreewidget.h \
+    progressdialog.h \
+    tbufferedreader.h \
+    textviewer.h \
+    trigramsrepository.h \
+    trigramssearcher.h
 
 
 FORMS += \
