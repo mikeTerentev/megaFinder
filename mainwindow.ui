@@ -130,9 +130,9 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="nextButton">
+       <widget class="QLabel" name="fileNameLabel">
         <property name="text">
-         <string>Next usage</string>
+         <string/>
         </property>
        </widget>
       </item>
@@ -140,6 +140,20 @@
        <widget class="QLabel" name="foundAmountLabel">
         <property name="text">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="prevButton">
+        <property name="text">
+         <string>Prev usage</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="nextButton">
+        <property name="text">
+         <string>Next usage</string>
         </property>
        </widget>
       </item>

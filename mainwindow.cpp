@@ -31,6 +31,7 @@ main_window::main_window(QWidget *parent)
     connect(ui->lineEdit,SIGNAL(textChanged()),this,SLOT(changePattern()));
   
     connect(ui->nextButton,SIGNAL(pressed()),this,SLOT(next()));
+    connect(ui->prevButton,SIGNAL(pressed()),this,SLOT(prev()));
     connect(ui->textViewer,SIGNAL(textChanged()),ui->textViewer,SLOT(enableFlag()));
 
     connect(ui->dirWidget, SIGNAL(itemClicked(QTreeWidgetItem *,int)), ui->dirWidget, SLOT(fileClicked(QTreeWidgetItem * )));
@@ -54,6 +55,9 @@ void main_window::changePattern(){
 void main_window::findNextFile(){
     ui->textViewer->search();
     next();
+    QFileInfo f(ui->textViewer->getFilePath());
+    ui->fileNameLabel->setText("File :" + f.completeBaseName() + f.completeSuffix());
+    ui->foundAmountLabel->setText(QString::number(ui->textViewer->getAmount()) + " usages");
 }
 
 void main_window::find(){
@@ -64,16 +68,16 @@ void main_window::find(){
     QVector<QPair<QString,QList<QString>>> files = trigramsRepository.find(pattern);
     if(files.isEmpty()) return;
     ui->treeWidget->addFilesFromDirs(files);
-    findNextFile();
 }
 
+void main_window::prev(){
+     ui->textViewer->prev();
+     qDebug()<<ui->textViewer->getCurrentUsage()<<" "<<ui->textViewer->getAmount();
+}
 
 void main_window::next(){
     ui->textViewer->next();
     qDebug()<<ui->textViewer->getCurrentUsage()<<" "<<ui->textViewer->getAmount();
-    ui->foundAmountLabel->clear();
-    QString msg = QString(QString::number(ui->textViewer->getCurrentUsage())+" of "+ QString::number(ui->textViewer->getAmount()) + "usages");
-    ui->foundAmountLabel->setText(msg);
 }
 
 void main_window::addFileDirectory(QString dir){
@@ -133,6 +137,7 @@ void main_window::removeDirectory(const QString dir){
     ui->treeWidget->deleteDir(dir);
     ui->textViewer->clear();
     ui->foundAmountLabel->clear();
+     ui->fileNameLabel->clear();
 }
 
 void main_window::updateFile(QString path){
@@ -148,7 +153,12 @@ void main_window::updateFile(QString path){
 
 void main_window::updateDirectory(QString dir){
    removeDirectory(dir);
-   addFileDirectory(dir);
+   if (QMessageBox::warning(this, "Changing",
+                           QString("%1 \n\n changed. Do you want to reindex it?").arg(dir),
+                           QMessageBox::Yes | QMessageBox::Cancel) == QMessageBox::Yes){
+        addFileDirectory(dir);
+   }
+
 }
 
 
@@ -156,6 +166,7 @@ void main_window::clear(){
     ui->treeWidget->clear();
     ui->textViewer->clear();
     ui->foundAmountLabel->clear();
+     ui->fileNameLabel->clear();
 }
 void main_window::fileClicked(QTreeWidgetItem * widget){
     ui->treeWidget->fileSelected(widget);

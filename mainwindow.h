@@ -41,6 +41,7 @@ public:
     void openFile(QString path);
     void save();
     void addFileDirectory(QString dir = "");
+    void prev();
     private
        slots:
     void show_about_dialog();   

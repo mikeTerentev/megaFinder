@@ -7,7 +7,7 @@
 #include <QFile>
 #include <QPlainTextEdit>
 #include <QTextStream>
-
+#include <QTextCursor>
 class TextViewer : public QTextEdit
 {
      Q_OBJECT
@@ -20,7 +20,8 @@ public:
     void search();
 
     void setLine(const QString& tx){
-        line = tx;
+        line = *(tx.split('\n').begin());
+        qDebug()<<"modline"<<line;
     }
     void save();
 
@@ -34,12 +35,15 @@ public:
     const QString& getFilePath(){
         return filePath;
     }
+    void prev();
 public slots:
     void openFile(QString path);
 
     void next();
     void enableFlag();
 private:
+    QVector<int> positions;
+    QTextCursor mainCursor;
    QList<QTextEdit::ExtraSelection>::iterator it;
     bool isChanged = false;
     int amount, currentUsage = 0;

@@ -10,6 +10,7 @@ void TextViewer::save(){
 }
 void TextViewer::search()
 {
+       positions.clear();
         amount = 0;
         currentUsage=0;
         extraSelections.clear();
@@ -20,6 +21,7 @@ void TextViewer::search()
             QTextEdit::ExtraSelection extra;
             extra.format.setBackground(color);
             extra.cursor = textCursor();
+            positions.push_back(textCursor().position());
             extraSelections.append(extra);
         }
 
@@ -27,22 +29,33 @@ void TextViewer::search()
    moveCursor(QTextCursor::Start);
 }
 
+void TextViewer::prev(){
+    qDebug()<<"search next place";
+    if (amount == 0)
+        return;
+    currentUsage--;
+    if(currentUsage < 1){
+        currentUsage = amount;
+    }
+    QTextCursor cursor(textCursor());
+    cursor.setPosition(positions[currentUsage - 1]);
+    cursor.setPosition(positions[currentUsage - 1] - line.length(),QTextCursor::KeepAnchor);
+    setTextCursor(cursor);
+}
+
 void TextViewer::next(){
    qDebug()<<"search next place";
    if (amount == 0)
        return;
-   extraSelections.clear();
-   QTextCursor cursor = textCursor();
-   cursor.clearSelection();
-   setTextCursor(cursor);
-   if (!find(line) && amount != 0){
-       moveCursor(QTextCursor::Start);
-       currentUsage = 0;
-       find(line);
+   currentUsage++;
+   if(currentUsage > amount){
+       currentUsage = 1;
    }
-    currentUsage++;
-    textCursor().select(QTextCursor::BlockUnderCursor);
-}
+   QTextCursor cursor(textCursor());
+   cursor.setPosition(positions[currentUsage - 1]);
+   cursor.setPosition(positions[currentUsage - 1] - line.length(),QTextCursor::KeepAnchor);
+   setTextCursor(cursor);
+  }
 
 void TextViewer::openFile(QString path){
     filePath = path;
