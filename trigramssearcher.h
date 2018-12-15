@@ -21,7 +21,7 @@ public:
    const QString getDir(){
         return dir;
     }
-   const QMap<QString,QSet<QString>> getData(){
+   QMap<QString,QSet<QString>>& getData(){
         return  dirData;
     }
 

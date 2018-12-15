@@ -40,7 +40,7 @@ public:
     void fileClicked(QTreeWidgetItem *widget);
     void openFile(QString path);
     void save();
-    void addFileDirectory();
+    void addFileDirectory(QString dir = "");
     private
        slots:
     void show_about_dialog();   
@@ -52,7 +52,6 @@ private:
     TrigramsRepository trigramsRepository;
     QString pattern;
     FileIndexer indexer;
-    ProgressDialog* progressWindow;
     QCommonStyle style;
     std::unique_ptr <Ui::MainWindow> ui;
     void clear();

@@ -76,9 +76,11 @@ void main_window::next(){
     ui->foundAmountLabel->setText(msg);
 }
 
-void main_window::addFileDirectory(){
+void main_window::addFileDirectory(QString dir){
     clear();
-    QString dir = QFileDialog::getExistingDirectory(this, "Select Directory for Scanning",QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if(dir.isEmpty()){
+        dir = QFileDialog::getExistingDirectory(this, "Select Directory for Scanning",QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    }
     if (!trigramsRepository.canAddDir(dir)){
         QMessageBox::warning(this, "Directory has already added",QString("Directory \n\n %1 \n\n has already addFileed.").arg(dir), QMessageBox::Ok);
         return;
@@ -86,7 +88,7 @@ void main_window::addFileDirectory(){
 
     searcher = new  TrigramsSearcher(dir);
     auto *thread = new QThread();
-    progressWindow = new ProgressDialog(thread, this);
+    auto* progressWindow = new ProgressDialog(thread, this);
     searcher->moveToThread(thread);
 
     connect(thread, SIGNAL (started()), searcher, SLOT (indexDir()));
@@ -134,6 +136,8 @@ void main_window::removeDirectory(const QString dir){
 }
 
 void main_window::updateFile(QString path){
+   QFile fl(path);
+   if(!fl.exists()) return;
    TrigramsSearcher localSearcher(path);
    trigramsRepository.insertFile(path,localSearcher.updateFile());
    if(ui->textViewer->getFilePath() == path){
@@ -143,7 +147,8 @@ void main_window::updateFile(QString path){
 }
 
 void main_window::updateDirectory(QString dir){
-
+   removeDirectory(dir);
+   addFileDirectory(dir);
 }
 
 

@@ -11,7 +11,8 @@ void DirList::addFileDir( QString dir){
     addTopLevelItem(x);
 }
 void DirList::deleteDir(QString dir){
-    delete selectedDir;
+   auto x = findItems(dir,Qt::MatchContains,0);
+    delete x[0];
 }
 void DirList::fileClicked(QTreeWidgetItem * item){
     selectedDir = item;
