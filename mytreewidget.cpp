@@ -30,10 +30,12 @@ void MyTreeWidget::addFilesFromDirs(QVector<QPair<QString,QList<QString>>>& list
 void MyTreeWidget::deleteDir(const QString& dir){
       QTreeWidgetItemIterator it(this);
       while(*it){
+          qDebug()<<(*it)->text(DIR_COL);
           if ((*it)->text(DIR_COL) == dir){
               delete *it;
               break;
           }
+          it++;
       }
 }
 
