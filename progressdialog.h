@@ -19,8 +19,10 @@ public:
 
 public slots:
     void stopSearch();
-    void update(QString);
+    void update();
+
 private:
+     size_t  num = 0;
     Ui::ProgressDialog *ui;
     QThread* searchThread;
 };

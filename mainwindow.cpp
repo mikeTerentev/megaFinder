@@ -96,7 +96,7 @@ void main_window::addFileDirectory(QString dir){
     searcher->moveToThread(thread);
 
     connect(thread, SIGNAL (started()), searcher, SLOT (indexDir()));
-    connect(searcher, SIGNAL(fileIndexing(QString)), progressWindow, SLOT(update(QString)));
+    connect(searcher, SIGNAL(fileIndexing(QString)), progressWindow, SLOT(update()));
     connect(searcher, SIGNAL(finished(int)), this, SLOT(save()));
     connect(searcher, SIGNAL (finished(int)), thread, SLOT (quit()));
     connect(searcher, SIGNAL(finished(int)),  progressWindow, SLOT(done(int)));

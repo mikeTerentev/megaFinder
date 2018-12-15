@@ -23,6 +23,6 @@ void ProgressDialog::stopSearch() {
     searchThread->requestInterruption();
 }
 
-void ProgressDialog::update(QString message) {
-    ui->label->setText(message);
+void ProgressDialog::update() {
+    ui->label->setText("Indexing : " + QString::number(++num) + " have already indexed");
 }
