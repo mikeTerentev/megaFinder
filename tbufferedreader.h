@@ -16,6 +16,7 @@ public:
     bool hasNextTrigram();
     bool isTextFile();
 private:
+    QString::iterator it;
     size_t size;
     QFile* file;
     QString res;

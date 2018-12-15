@@ -20,7 +20,8 @@ public:
     void search();
 
     void setLine(const QString& tx){
-        line = *(tx.split('\n').begin());
+        line = tx;
+        //line = *(tx.split('\n').begin());
         qDebug()<<"modline"<<line;
     }
     void save();

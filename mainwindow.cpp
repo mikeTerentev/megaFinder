@@ -48,6 +48,9 @@ main_window::~main_window() {
 }
 
 void main_window::changePattern(){
+    ui->foundAmountLabel->clear();
+    ui->fileNameLabel->clear();
+    ui->textViewer->clear();
     pattern = ui->lineEdit->toPlainText();
     qDebug()<<"pattern changed to "<<pattern;
     find();
