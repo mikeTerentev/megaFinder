@@ -16,14 +16,16 @@ public:
 
     TrigramsRepository();
 
-    QMap<QString,QMap<QString,QSet<QString>>> getTrigramData(){
+    const QMap<QString,QMap<QString,QSet<QString>>>& getTrigramData(){
         return trigramsData;
     }
     bool canAddDir(QString path);
     void deleteDir(QString dir);
-    void insert(QString dir, QMap<QString,QSet<QString>> tdata);
     QVector<QPair<QString, QList<QString> > > find(QString pattern);
-
+    void insertFile(QString filePath, QSet<QString> tdata);
+public slots:
+    QString findDirByPath(QString path);
+    void insert(QString dir, QMap<QString, QSet<QString> > tdata);
 private:
     QMap<QString,QMap<QString,QSet<QString>>> trigramsData;
     //<dir,<file, trigrams>>

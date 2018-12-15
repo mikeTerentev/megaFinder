@@ -1,44 +1,40 @@
 #include "fileindexer.h"
-#include "patternsearcher.h"
+#include "trigramsrepository.h"
+#include <QTextStream>
+#include <QDialog>
+#include <algorithm>
 
-PatternSearcher::PatternSearcher(){
+TrigramsRepository::TrigramsRepository(){
     //no actions
 }
 
-bool PatternSearcher::addFileDir(QString path){
-     for (auto& dir : directories){
-         if (dir.contains(path)){
+bool TrigramsRepository::canAddDir(QString path){
+    if(path.isEmpty()){
+        qDebug()<<"PATH EMPTY!";
+        return 0;
+     }
+     for (auto& keyDir : trigramsData.keys()){
+         if (keyDir.contains(path) || path.contains(keyDir)){
              return false;
          }
      }
-     directories.insert(path);
-      qDebug()<<"add : "<< path<<"Map size: "<<directories.size();
      return true;
 }
 
-void PatternSearcher::deleteDir(QString dir){
-     directories.remove(dir);
-     qDebug()<<"remove : "<< dir<<"Map size: "<<directories.size();
+void TrigramsRepository::deleteDir(QString dir){
      trigramsData.remove(dir);
+     qDebug()<<"remove : "<< dir<<"Map size: "<<trigramsData.size();
 }
 
- void PatternSearcher::indexDir(QString dir){
-     QMap<QString,QSet<QString>> dirData;
-     QDirIterator it(dir, QDir::Hidden | QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-        while (it.hasNext()) {
-            QFileInfo  file =(it.next());
-            FileIndexer indexer;
-            QString fileDir(file.absoluteFilePath());
-            qDebug()<<fileDir;
-            if (file.isSymLink()) {
-                continue;
-            }
-            dirData.insert(fileDir, indexer.findTrigramsOfFile(fileDir));
-        }
-        trigramsData.insert(dir,dirData);
- }
+void TrigramsRepository::insertFile(QString filePath, QSet<QString> tdata){
+    QString directory = findDirByPath(filePath);
+    trigramsData[directory].insert(filePath, tdata);
+}
+void TrigramsRepository::insert(QString dir, QMap<QString,QSet<QString>> tdata){
+   trigramsData.insert(dir, tdata);
+}
 
- QVector<QPair<QString,QList<QString>>> PatternSearcher::find(QString pattern){
+QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString pattern){
      QVector<QPair<QString,QList<QString>>> result;
      FileIndexer indexer;
      QSet<QString> patternTrigrams =indexer.findTrigramsOfString(pattern);
@@ -64,6 +60,17 @@ void PatternSearcher::deleteDir(QString dir){
                   }
              }
              if (isMatch){
+                /* QFile file(filePath);
+                 QTextStream stream(&file);
+
+                 std::string std_pattern = pattern.toStdString();
+                 std::string std_text = stream.readAll().toStdString();
+                 auto it = std::search(std_text.begin(), std_text.end(),
+                                    std::boyer_moore_searcher(
+                                       std_pattern.begin(), std_pattern.end()));
+                 if (it == std_text.end()){
+                     continue;
+                 }*/
                  filesList.append(filePath);
                  qDebug()<<"Found:"<<filePath;
              }
@@ -72,3 +79,13 @@ void PatternSearcher::deleteDir(QString dir){
      }
      return result;
  }
+
+QString TrigramsRepository::findDirByPath(QString path){
+    for (auto curDir = trigramsData.begin(); curDir != trigramsData.end(); curDir++){
+        if(path.contains(curDir.key())){
+            return curDir.key();
+        }
+    }
+    qDebug()<<"LOGICAL ERROR NOT FOUND DIR BY PATH";
+    return "";
+}
