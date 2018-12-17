@@ -14,11 +14,11 @@ void TrigramsSearcher::indexDir(){
            QFileInfo  file =(it.next());
            emit fileIndexing(file.absoluteFilePath());
            QString filePath(file.absoluteFilePath());
-           qDebug()<<filePath;
+           //qDebug()<<filePath;
            if (file.isSymLink()) {
                continue;
            }
-           auto fileData = indexer.findTrigramsOfFile(filePath);
+           QSet<uint64_t> fileData = indexer.findTrigramsOfFile(filePath);
            if (!fileData.isEmpty()){
               dirData.insert(filePath, fileData);
               directories.append(filePath);
@@ -28,6 +28,6 @@ void TrigramsSearcher::indexDir(){
        emit finished(QDialog::Accepted);
 }
 
-QSet<QString> TrigramsSearcher::updateFile(){
+QSet<uint64_t> TrigramsSearcher::getFileTrigrams(){
     return indexer.findTrigramsOfFile(dir);
 }

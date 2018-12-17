@@ -10,6 +10,9 @@
 #include "tbufferedreader.h"
 #include "QDebug"
 int main(int argc, char *argv[]) {
+    qDebug()<<static_cast<unsigned char>('a');
+    qDebug()<<((static_cast<unsigned char>('a') << 8) + static_cast<unsigned char>('b'));
+    qDebug()<<"abc"<< (((static_cast<unsigned char>('a') << 8) + static_cast<unsigned char>('b')) << 8) + static_cast<unsigned char>('c');
     TBufferedReader x("/Users/miketerentyev/itmo/poligon.txt");
     while(x.hasNextTrigram()){
         qDebug()<<x.hasNextTrigram()<<" "<< x.nextTrigram()<<endl;

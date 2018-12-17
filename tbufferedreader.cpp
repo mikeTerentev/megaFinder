@@ -1,44 +1,40 @@
 #include "tbufferedreader.h"
 
-
+#include <QDebug>
     TBufferedReader::TBufferedReader(QString filePath){
         file = new QFile(filePath);
         if (file->open(QFile::ReadOnly)){
-            stream = new QTextStream(file);
-            line = stream->readAll();
-            it=line.begin();
-            size = line.size();
+            byteLine = file->readAll();
+            it = byteLine.begin();
+            size = byteLine.size();
             pointer = 0;
         }
     }
 
 
-    QString TBufferedReader::nextTrigram(){
+    uint64_t TBufferedReader::nextTrigram(){
         /*if (pointer + 2 >= line.size()){pointer = 0; line = stream->readAll()}*/
-        res = (*it);
+        hash = static_cast<unsigned char>(*it);
+        //qDebug()<<"1 ->"<<hash;
         for(int i=0; i<2;i++){
-             pointer++;
              it++;
-             res+=(*it);
+             hash = (hash << 8) +  static_cast<unsigned char>(*it);
+             //qDebug()<<i+2<<" ->"<< hash;
         }
         it--;
-        return res;
+        pointer++;
+        return hash;
     }
 
     bool TBufferedReader::hasNextTrigram(){
-        if(pointer + 2 < size /*|| !stream->atEnd()*/){
-            return  true;
-        } else{
-            return false;
-        }
+        return  (pointer + 2 < size) ? true : false;
     }
     TBufferedReader::~TBufferedReader(){
         delete file;
-        delete stream;
     }
 
     bool TBufferedReader::isTextFile(){
-        for(auto it = line.begin(); it != line.end(); it++){
+        for(auto it = byteLine.begin(); it != byteLine.end(); it++){
             if(*it == '\0'){
                 return false;
             }

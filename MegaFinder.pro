@@ -8,7 +8,7 @@ QT       += core gui
 QT += qml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = MegaCleaner
+TARGET = MegaFinder
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use

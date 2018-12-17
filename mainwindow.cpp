@@ -111,6 +111,7 @@ void main_window::addFileDirectory(QString dir){
         }
    delete progressWindow;
 }
+
 void main_window::save(){
       if(searcher->isSearchCompleted()){
           QString curDir = searcher->getDir();
@@ -140,14 +141,14 @@ void main_window::removeDirectory(const QString dir){
     ui->treeWidget->deleteDir(dir);
     ui->textViewer->clear();
     ui->foundAmountLabel->clear();
-     ui->fileNameLabel->clear();
+    ui->fileNameLabel->clear();
 }
 
 void main_window::updateFile(QString path){
    QFile fl(path);
    if(!fl.exists()) return;
    TrigramsSearcher localSearcher(path);
-   trigramsRepository.insertFile(path,localSearcher.updateFile());
+   trigramsRepository.insertFile(path,localSearcher.getFileTrigrams());
    if(ui->textViewer->getFilePath() == path){
        ui->textViewer->openFile(path);
        QMessageBox::warning(this, "Update",QString("File \n\n %1 \n\n was updated").arg(path), QMessageBox::Ok);
@@ -169,7 +170,7 @@ void main_window::clear(){
     ui->treeWidget->clear();
     ui->textViewer->clear();
     ui->foundAmountLabel->clear();
-     ui->fileNameLabel->clear();
+    ui->fileNameLabel->clear();
 }
 void main_window::fileClicked(QTreeWidgetItem * widget){
     ui->treeWidget->fileSelected(widget);

@@ -62,24 +62,10 @@
          <property name="text">
           <string>Filename</string>
          </property>
-         <property name="background">
-          <color>
-           <red>236</red>
-           <green>232</green>
-           <blue>173</blue>
-          </color>
-         </property>
         </column>
         <column>
          <property name="text">
           <string>Directory</string>
-         </property>
-         <property name="background">
-          <color>
-           <red>236</red>
-           <green>232</green>
-           <blue>173</blue>
-          </color>
          </property>
         </column>
        </widget>
@@ -89,13 +75,6 @@
        <column>
         <property name="text">
          <string>Directory</string>
-        </property>
-        <property name="background">
-         <color>
-          <red>236</red>
-          <green>232</green>
-          <blue>173</blue>
-         </color>
         </property>
        </column>
       </widget>

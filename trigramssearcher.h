@@ -21,7 +21,7 @@ public:
    const QString getDir(){
         return dir;
     }
-   QMap<QString,QSet<QString>>& getData(){
+   QMap<QString,QSet<uint64_t>>& getData(){
         return  dirData;
     }
 
@@ -33,7 +33,7 @@ public:
    }
 public slots:
     void indexDir();
-    QSet<QString> updateFile();
+    QSet<uint64_t> getFileTrigrams();
 
 signals:
      void fileIndexing(QString);
@@ -41,7 +41,7 @@ signals:
 
 private:
     FileIndexer indexer;
-    QMap<QString,QSet<QString>> dirData;
+    QMap<QString,QSet<uint64_t>> dirData;
     QList<QString> directories;
     QString dir;
     bool isCompleted = false;

@@ -11,31 +11,32 @@ class FileIndexer : public QObject
 {
     Q_OBJECT
 public:
-    FileIndexer(QString pattern);
+    FileIndexer(std::string pattern);
 
     FileIndexer() = default;
 
-    QString getLine()
+    std::string getLine()
     {
         return pattern;
     }
-    void setLine(const QString &text)
+    void setLine(const std::string& text)
     {
         pattern = text;
     }
-    QSet<QString> findTrigramsOfString(const QString& line);
+    QSet<uint64_t> findTrigramsOfString(const std::string& line);
+    uint64_t makeTrigram(const std::string&info);
 private:
-   QSet<QString> getDirectories(){
+   QSet<std::string> getDirectories(){
         return directories;
     }
 
 private:
-    QSet<QString> directories;
-    QString pattern;
-    QList<QString> foundFiles;
+    uint localHash;
+    QSet<std::string> directories;
+    std::string pattern;
+    QList<std::string> foundFiles;
 public slots:
-    QSet<QString> findTrigramsOfFile(const QString& file);
-    void indexDir(const QString &dir);
+    QSet<uint64_t> findTrigramsOfFile(const QString &file);
 };
 
 #endif // FINDERALGORITHM_H

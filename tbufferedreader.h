@@ -12,16 +12,15 @@ class TBufferedReader
 public:
     TBufferedReader(QString filePath);
     ~TBufferedReader();
-    QString nextTrigram();
+    uint64_t nextTrigram();
     bool hasNextTrigram();
     bool isTextFile();
 private:
-    QString::iterator it;
-    size_t size;
+    QByteArray::iterator it;
+    int size;
     QFile* file;
-    QString res;
-    QTextStream* stream;
-    QString line;
+    uint64_t hash;
+    QByteArray byteLine;
     int pointer;
 };
 
