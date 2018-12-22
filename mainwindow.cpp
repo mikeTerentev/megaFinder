@@ -163,7 +163,7 @@ void main_window::addPreprocessedDir(QString curDir){
 }
 
 void main_window::foundDuplicate(QString dir){
-    QMessageBox::warning(this, "Directory has already added",QString("Directory \n\n %1 \n\n has already addFileed.").arg(dir), QMessageBox::Ok);
+    QMessageBox::warning(this, "Directory has already added",QString("Directory \n\n %1 \n\n has already added.").arg(dir), QMessageBox::Ok);
     return;
 }
 

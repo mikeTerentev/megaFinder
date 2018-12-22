@@ -39,7 +39,6 @@ SOURCES += \
 
 HEADERS += \
     mainwindow.h \
-    action.h \
     dirlist.h \
     fileindexer.h \
     mytreewidget.h \
