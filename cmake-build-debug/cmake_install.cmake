@@ -1,4 +1,4 @@
-# Install script for directory: /Users/miketerentyev/itmo/2-year/MegaCleaner
+# Install script for directory: /Users/miketerentyev/itmo/2-year/MegaFinder
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/miketerentyev/itmo/2-year/MegaCleaner/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

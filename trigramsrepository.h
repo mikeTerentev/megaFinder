@@ -9,25 +9,33 @@
 #include <QList>
 #include <QPair>
 #include <QThread>
-class TrigramsRepository
+class TrigramsRepository : public QObject
 {
+Q_OBJECT
 
 public:
 
     TrigramsRepository();
 
-    const QMap<QString,QMap<QString,QSet<QString>>>& getTrigramData(){
+    const QMap<QString,QMap<QString,QSet<uint64_t>>>& getTrigramData(){
         return trigramsData;
     }
     bool canAddDir(QString path);
     void deleteDir(QString dir);
     QVector<QPair<QString, QList<QString> > > find(QString pattern);
-    void insertFile(QString filePath, QSet<QString> tdata);
+    void insertFile(QString filePath, QSet<uint64_t> tdata);
+    int getFilesAmount(){
+        return filesAmount;
+    }
+signals:
+    void intertuptionRequest();
+    void fileDone(int);
 public slots:
     QString findDirByPath(QString path);
-    void insert(QString dir, QMap<QString, QSet<QString> > tdata);
+    void insert(QString dir, QMap<QString, QSet<uint64_t> > tdata);
 private:
-    QMap<QString,QMap<QString,QSet<QString>>> trigramsData;
+    int filesAmount = 0;
+    QMap<QString,QMap<QString,QSet<uint64_t>>> trigramsData;
     //<dir,<file, trigrams>>
 
 };

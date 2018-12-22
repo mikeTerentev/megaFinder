@@ -1,3 +1,4 @@
-/Users/miketerentyev/itmo/2-year/MegaCleaner/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/miketerentyev/itmo/2-year/MegaCleaner/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/miketerentyev/itmo/2-year/MegaCleaner/cmake-build-debug/CMakeFiles/filechecker.dir
+/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir
+/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder_autogen.dir

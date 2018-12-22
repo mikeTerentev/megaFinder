@@ -13,7 +13,9 @@
 #include <qcommonstyle.h>
 #include <QTreeWidgetItem>
 #include <QFileSystemWatcher>
+#include <QFutureWatcher>
 
+typedef QVector<QPair<QString,QList<QString>>> qstring_list;
 
 namespace Ui {
     class MainWindow;
@@ -31,6 +33,7 @@ public:
 
 
     void findNextFile();
+    void block(bool isBlock);
     public
     slots:
     void updateFile(QString path);
@@ -39,18 +42,24 @@ public:
     void  find();
     void fileClicked(QTreeWidgetItem *widget);
     void openFile(QString path);
-    void save();
+    void addPreprocessedDir(QString curDir);
     void addFileDirectory(QString dir = "");
     void prev();
+    void foundDuplicate(QString dir);
+    void finishedSearch(QVector<QPair<QString, QList<QString> > > info, bool fin);
     private
        slots:
     void show_about_dialog();   
-
     void next();
+signals:
+    void stopSearching();
+    void stopIndexing();
 private:
-    QFileSystemWatcher watcher;
+    QThread thread;
+    QFutureWatcher<void> result;
     TrigramsSearcher* searcher;
-    TrigramsRepository trigramsRepository;
+    QFileSystemWatcher* watcher;
+    TrigramsRepository* trigramsRepository;
     QString pattern;
     FileIndexer indexer;
     QCommonStyle style;

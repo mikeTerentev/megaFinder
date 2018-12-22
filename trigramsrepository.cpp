@@ -22,25 +22,33 @@ bool TrigramsRepository::canAddDir(QString path){
 }
 
 void TrigramsRepository::deleteDir(QString dir){
-     trigramsData.remove(dir);
+    filesAmount -= trigramsData[dir].size();
+    trigramsData.remove(dir);
      qDebug()<<"remove : "<< dir<<"Map size: "<<trigramsData.size();
 }
 
-void TrigramsRepository::insertFile(QString filePath, QSet<QString> tdata){
+void TrigramsRepository::insertFile(QString filePath, QSet<uint64_t> tdata){
     QString directory = findDirByPath(filePath);
     trigramsData[directory].insert(filePath, tdata);
 }
-void TrigramsRepository::insert(QString dir, QMap<QString,QSet<QString>> tdata){
-   trigramsData.insert(dir, tdata);
+void TrigramsRepository::insert(QString dir, QMap<QString,QSet<uint64_t>> tdata){
+    filesAmount +=tdata.size();
+    trigramsData.insert(dir, tdata);
 }
-
-QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString pattern){
+QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern){
+    int n = 0;
+    std::string pattern = qpattern.toStdString();
      QVector<QPair<QString,QList<QString>>> result;
      FileIndexer indexer;
-     QSet<QString> patternTrigrams =indexer.findTrigramsOfString(pattern);
+     QSet<uint64_t> patternTrigrams =indexer.findTrigramsOfString(pattern);
      for (auto curDir = trigramsData.begin(); curDir != trigramsData.end(); curDir++){
          QList<QString> filesList;
          for (auto curFile = curDir.value().begin(); curFile != curDir.value().end(); curFile++){
+             if (QThread::currentThread()->isInterruptionRequested()){
+                 qDebug()<<"---->InterruptionRequested<----";
+                return result;
+             }
+             n++;
              bool isMatch = true;
              QString filePath = curFile.key();
              if( pattern.size() >= 3){
@@ -52,8 +60,10 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString pattern)
              }
              else {
                   isMatch = false;
-                  for (auto& fileTrigram : curFile.value()){
-                      if (fileTrigram.contains(pattern)){
+                  uint64_t patternTrigram = indexer.makeTrigram(pattern);
+                  for (uint64_t fileTrigram : curFile.value()){
+
+                      if (((fileTrigram>>8) == patternTrigram) || ((fileTrigram>>16) == patternTrigram)){
                          isMatch = true;
                          continue;
                       }
@@ -72,8 +82,9 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString pattern)
                      continue;
                  }*/
                  filesList.append(filePath);
-                 qDebug()<<"Found:"<<filePath;
+                 //qDebug()<<"Found:"<<filePath;
              }
+             emit fileDone(n);
           }
         result.push_back(qMakePair(curDir.key(),filesList));
      }

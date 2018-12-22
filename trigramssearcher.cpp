@@ -1,9 +1,24 @@
 #include "trigramssearcher.h"
 
 
-
+void TrigramsSearcher::find(){
+    qDebug()<< "started";
+    emit filesCounted(trigramsRepository->getFilesAmount());
+    auto foundData = trigramsRepository->find(pattern);
+    if (QThread::currentThread()->isInterruptionRequested()){
+        emit finished(foundData,false);
+        return;
+    }
+    qDebug()<<"finished";
+    emit finished(foundData,true);
+}
 
 void TrigramsSearcher::indexDir(){
+    if (!trigramsRepository->canAddDir(dir)){
+        emit foundDuplicate(dir);
+        emit finished(QDialog::Accepted);
+        return;
+    }
      qDebug()<<"add : "<< dir <<"Map size inc";
     QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
        while (it.hasNext()) {
@@ -21,10 +36,14 @@ void TrigramsSearcher::indexDir(){
            QSet<uint64_t> fileData = indexer.findTrigramsOfFile(filePath);
            if (!fileData.isEmpty()){
               dirData.insert(filePath, fileData);
-              directories.append(filePath);
+              filePaths.append(filePath);
            }
        }
-       isCompleted = true;
+       trigramsRepository->insert(dir,dirData);
+       watcher->addPaths(filePaths);
+       watcher->addPath(dir);
+       qDebug()<<"Watching directories : "<<watcher->directories().size()<<"files : "<<watcher->files().size();
+       emit addPreprocessedDir(dir);
        emit finished(QDialog::Accepted);
 }
 

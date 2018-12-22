@@ -1,19 +1,34 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.9)
 
-project("MegaCleaner")
+project(MegaFinder)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set (INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 
-find_package(Qt5Widgets)
+set(CMAKE_PREFIX_PATH /Users/miketerentyev/Qt/5.11.2/clang_64/)
+find_package(Qt5Widgets REQUIRED)
 
-
-add_executable(filechecker main.cpp mainwindow.h
+add_executable(MegaFinder
+        main.cpp
         mainwindow.cpp
-        action.h
-        dataparser.h
-        dataparser.cpp
-        )
-target_link_libraries(filechecker stdc++fs Qt5::Widgets -lpthread -lstdc++fs)
+        mainwindow.h
+        dirlist.cpp
+        dirlist.h
+        mytreewidget.cpp
+        mytreewidget.h
+        progressdialog.cpp
+        progressdialog.h
+        tbufferedreader.cpp
+        tbufferedreader.h
+        textviewer.cpp
+        textviewer.h
+        fileindexer.cpp
+        fileindexer.h
+        trigramsrepository.cpp
+        trigramsrepository.h
+        trigramssearcher.cpp
+        trigramssearcher.h)
+
+
+qt5_use_modules(MegaFinder Widgets QuickControls2)
