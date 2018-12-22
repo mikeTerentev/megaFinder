@@ -47,7 +47,6 @@ main_window::main_window(QWidget *parent)
     connect(watcher,SIGNAL(fileChanged(QString)),this, SLOT(updateFile(QString)));
     connect(watcher,SIGNAL(directoryChanged(QString)),this, SLOT(updateDirectory(QString)));
     trigramsRepository = new TrigramsRepository();
-
     thread.start();
        thread.quit();
        thread.wait();
@@ -100,7 +99,6 @@ void main_window::find(){
     connect(trigramsRepository, SIGNAL(fileDone(int)), ui->progressBar, SLOT(setValue(int)));
     connect(searcher, SIGNAL(finished(QVector<QPair<QString,QList<QString>>>,bool)), this, SLOT(finishedSearch(QVector<QPair<QString,QList<QString>>>,bool)));
     //connect(searcher, SIGNAL(finished(QVector<QPair<QString,QList<QString>>>,bool)), &thread, SLOT(quit()));
-
     thread.start();
 }
 
@@ -133,11 +131,11 @@ void main_window::block(bool isEnable){
     ui->treeWidget->setEnabled(isEnable);
 }
 void main_window::addFileDirectory(QString dir){
-    emit stopIndexing();
     clear();
     if(dir.isEmpty()){
         dir = QFileDialog::getExistingDirectory(this, "Select Directory for Scanning",QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     }
+    if(dir.isEmpty()) return;
     QThread * indThread = new QThread();
     searcher = new  TrigramsSearcher(dir,trigramsRepository,watcher);
     searcher->setPattern(dir);
