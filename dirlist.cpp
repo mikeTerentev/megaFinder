@@ -24,6 +24,7 @@ void DirList::keyPressEvent(QKeyEvent * event){
     QString x =event->text();
     if ( event->key() == Qt::Key_Backspace){
         mainwindow->removeDirectory(selectedDir->text(0));
+        return;
     }
     if ( event->key() == Qt::Key_N){
         mainwindow->addFileDirectory();

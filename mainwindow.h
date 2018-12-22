@@ -26,7 +26,7 @@ class main_window : public QMainWindow {
 
 public:
 
-    void removeDirectory(QString dir);
+
     explicit main_window(QWidget *parent = nullptr);
 
     ~main_window();
@@ -46,9 +46,12 @@ public:
     void addFileDirectory(QString dir = "");
     void prev();
     void foundDuplicate(QString dir);
-    void finishedSearch(QVector<QPair<QString, QList<QString> > > info, bool fin);
-    private
+     void removeDirectory(QString dir);
+     void finishedSearch(QVector<QPair<QString, QList<QString> > > info, bool fin);
+     void endRemoving();
+     private
        slots:
+
     void show_about_dialog();   
     void next();
 signals:

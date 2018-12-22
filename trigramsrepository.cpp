@@ -21,6 +21,7 @@ bool TrigramsRepository::canAddDir(QString path){
      return true;
 }
 
+
 void TrigramsRepository::deleteDir(QString dir){
     filesAmount -= trigramsData[dir].size();
     trigramsData.remove(dir);

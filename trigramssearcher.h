@@ -20,7 +20,7 @@ class TrigramsSearcher:public   QObject
     Q_OBJECT
 public:
     TrigramsSearcher(QString dir,TrigramsRepository* trigramsRepository,  QFileSystemWatcher* watcher) :
-        dir(dir),trigramsRepository(trigramsRepository),watcher(watcher)
+        trigramsRepository(trigramsRepository),  watcher(watcher), dir(dir)
     {}
 
    const QString getDir(){
@@ -45,13 +45,15 @@ public slots:
     QSet<uint64_t> getFileTrigrams();
 
     void find();
+    void removeDirectory();
 signals:
+     void updateBar(int);
      void filesCounted(int);
      void fileDone(int);
      void finishedSearch(QVector<QPair<QString,QList<QString>>>);
      void addPreprocessedDir(QString);
      void foundDuplicate(QString);
-     void fileIndexing(QString);
+     void fileIndexing();
      void finished(int);
      void finished();
      void finished(QVector<QPair<QString,QList<QString>>>,bool);

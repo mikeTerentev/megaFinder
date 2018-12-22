@@ -15,7 +15,9 @@ public:
     uint64_t nextTrigram();
     bool hasNextTrigram();
     bool isTextFile();
+    bool canOpen();
 private:
+    bool isReadble = false;
     QByteArray::iterator it;
     int size;
     QFile* file;

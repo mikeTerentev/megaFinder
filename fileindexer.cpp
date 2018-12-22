@@ -7,8 +7,12 @@ QSet<uint64_t> FileIndexer::findTrigramsOfFile(const QString& file)
 {
     QSet<uint64_t> data;
     TBufferedReader reader(file);
+    if(!reader.canOpen()){
+        qDebug()<<"Can't open ---->"<<file <<"<----";
+        return  data;
+    }
     if(!reader.isTextFile()){
-        qDebug()<<"FILE IS BINARY"<<file;
+        //qDebug()<<"FILE IS BINARY"<<file;
         return data;
     }
     while(reader.hasNextTrigram()){

@@ -18,11 +18,16 @@ ProgressDialog::~ProgressDialog()
     delete ui;
 }
 
+void ProgressDialog::setRange(int max){
+    ui->progressBar->setRange(0,max);
+    amount = max;
+}
 void ProgressDialog::stopSearch() {
     this->done(0);
     searchThread->requestInterruption();
 }
 
 void ProgressDialog::update() {
-    ui->label->setText("Indexing : " + QString::number(++num) + " have already indexed");
+    ui->label->setText(QString::number(++num) + " / " + QString::number(amount) +" have already indexed");
+    ui->progressBar->setValue(num);
 }

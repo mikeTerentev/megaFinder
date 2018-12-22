@@ -20,14 +20,21 @@ void TrigramsSearcher::indexDir(){
         return;
     }
      qDebug()<<"add : "<< dir <<"Map size inc";
-    QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-       while (it.hasNext()) {
+     int amount = 0;
+     QDirIterator pre_it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+      while (pre_it.hasNext()) {
+          pre_it.next();
+          amount++;
+     }
+     emit filesCounted(amount);
+
+   QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+    while (it.hasNext()) {
            if (QThread::currentThread()->isInterruptionRequested()){
               emit finished(QDialog::Accepted);
               return;
            }
            QFileInfo  file =(it.next());
-           emit fileIndexing(file.absoluteFilePath());
            QString filePath(file.absoluteFilePath());
            //qDebug()<<filePath;
            if (file.isSymLink()) {
@@ -38,6 +45,7 @@ void TrigramsSearcher::indexDir(){
               dirData.insert(filePath, fileData);
               filePaths.append(filePath);
            }
+           emit fileIndexing();
        }
        trigramsRepository->insert(dir,dirData);
        watcher->addPaths(filePaths);
@@ -49,4 +57,21 @@ void TrigramsSearcher::indexDir(){
 
 QSet<uint64_t> TrigramsSearcher::getFileTrigrams(){
     return indexer.findTrigramsOfFile(dir);
+}
+void TrigramsSearcher::removeDirectory(){
+    int n = 0;
+    watcher->removePath(dir);
+    QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+     while (it.hasNext()) {
+        emit updateBar(++n);
+        QFileInfo file = it.next();
+        if (file.isSymLink()) {
+            continue;
+        }
+        watcher->removePath(file.absoluteFilePath());
+        //qDebug()<<"remove file : "<< file.absoluteFilePath();
+     }
+    qDebug()<<"Watching directories : "<<watcher->directories().size()<<"files : "<<watcher->files().size();
+    trigramsRepository->deleteDir(dir);
+    emit finished();
 }

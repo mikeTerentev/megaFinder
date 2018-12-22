@@ -9,12 +9,9 @@
 main_window::main_window(QWidget *parent)
         :  QMainWindow(parent) ,ui(new Ui::MainWindow){
     qRegisterMetaType<qstring_list>( "qstring_list" );
-
     ui->setupUi(this);
     ui->dirWidget->setMainWindow(this);
     ui->treeWidget->setMainWindow(this);
-    ui->progressBar->setMinimum(0);
-     ui->progressBar->setHidden(1);
     ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->NAME_COL,  QHeaderView::ResizeToContents);
     ui->treeWidget->header()->setSectionResizeMode(ui->treeWidget->DIR_COL, QHeaderView::Stretch);
    //  ui->treeWidget->header()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
@@ -42,7 +39,6 @@ main_window::main_window(QWidget *parent)
     connect(ui->dirWidget, SIGNAL(currentItemChanged(QTreeWidgetItem *, QTreeWidgetItem * )), ui->dirWidget, SLOT(fileClicked(QTreeWidgetItem * )));
 
     connect(ui->addFileButton, SIGNAL(clicked()),this, SLOT(addFileDirectory()));
-
     watcher = new QFileSystemWatcher();
     connect(watcher,SIGNAL(fileChanged(QString)),this, SLOT(updateFile(QString)));
     connect(watcher,SIGNAL(directoryChanged(QString)),this, SLOT(updateDirectory(QString)));
@@ -84,11 +80,8 @@ void main_window::find(){
         return;
     }
     clear();
-    ui->progressBar->reset();
-    block(false);
-    ui->progressBar->setHidden(0);
+    block(true);
     ui->textViewer->setLine(pattern);
-    ui->progressBar->setMinimum(0);
     searcher = new  TrigramsSearcher(pattern,trigramsRepository,watcher);
     searcher->setPattern(pattern);
 
@@ -103,8 +96,7 @@ void main_window::find(){
 }
 
 void main_window::finishedSearch(QVector<QPair<QString,QList<QString>>> info,bool fin){
-     ui->progressBar->setHidden(1);
-     block(true);
+     block(false);
      if(!fin) return;
      if(info.isEmpty()) return;
      ui->treeWidget->addFilesFromDirs(info);
@@ -123,13 +115,15 @@ void main_window::next(){
 }
 
 void main_window::block(bool isEnable){
-    ui->addFileButton->setEnabled(isEnable);
-    ui->nextButton->setEnabled(isEnable);
-    ui->prevButton->setEnabled(isEnable);
-    ui->dirWidget->setEnabled(isEnable);
-    ui->textViewer->setEnabled(isEnable);
-    ui->treeWidget->setEnabled(isEnable);
+    ui->lineEdit->setDisabled(isEnable);
+    ui->addFileButton->setDisabled(isEnable);
+    ui->prevButton->setDisabled(isEnable);
+    ui->nextButton->setDisabled(isEnable);
+    ui->dirWidget->setDisabled(isEnable);
+    ui->textViewer->setDisabled(isEnable);
+    ui->treeWidget->setDisabled(isEnable);
 }
+
 void main_window::addFileDirectory(QString dir){
     clear();
     if(dir.isEmpty()){
@@ -141,9 +135,9 @@ void main_window::addFileDirectory(QString dir){
     searcher->setPattern(dir);
     searcher->moveToThread(indThread);
     auto* progressWindow = new ProgressDialog(&thread, this);
-
        connect(indThread, SIGNAL (started()), searcher, SLOT (indexDir()));
-       connect(searcher, SIGNAL(fileIndexing(QString)), progressWindow, SLOT(update()));
+        connect(searcher, SIGNAL(filesCounted(int)),progressWindow, SLOT(setRange(int)));
+       connect(searcher, SIGNAL(fileIndexing()), progressWindow, SLOT(update()));
        connect(searcher, SIGNAL (finished(int)),indThread, SLOT (quit()));
        connect(searcher, SIGNAL(finished(int)),  progressWindow, SLOT(done(int)));
        connect(indThread, SIGNAL (finished()), indThread, SLOT (deleteLater()));
@@ -168,42 +162,51 @@ void main_window::foundDuplicate(QString dir){
 }
 
 void main_window::removeDirectory(const QString dir){
-    watcher->removePath(dir);
-    QDirIterator it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
-     while (it.hasNext()) {
-        QFileInfo file = it.next();
-        if (file.isSymLink()) {
-            continue;
-        }
-        watcher->removePath(file.absoluteFilePath());
-        qDebug()<<"remove file : "<< file.absoluteFilePath();
-     }
-    qDebug()<<"Watching directories : "<<watcher->directories().size()<<"files : "<<watcher->files().size();
-    trigramsRepository->deleteDir(dir);
     ui->dirWidget->deleteDir(dir);
     ui->treeWidget->deleteDir(dir);
-    ui->textViewer->clear();
-    ui->foundAmountLabel->clear();
-    ui->fileNameLabel->clear();
+    ui->progressBar->setRange(0,trigramsRepository->getTrigramData()[dir].size());
+    block(true);
+    ui->lineEdit->setDisabled(true);
+    watcher->removePath(dir);
+    QThread* remThread = new QThread();
+    searcher = new  TrigramsSearcher(dir,trigramsRepository,watcher);
+    searcher->moveToThread(remThread);
+       connect(remThread, SIGNAL (started()), searcher, SLOT (removeDirectory()));
+       connect(searcher, SIGNAL(updateBar(int)), ui->progressBar, SLOT(setValue(int)));
+        connect(searcher, SIGNAL (finished()), this, SLOT (endRemoving()));
+         connect(searcher, SIGNAL (finished()),remThread,SLOT(quit()));
+       connect(remThread, SIGNAL (finished()), remThread, SLOT (deleteLater()));
+    remThread->start();
 }
+
+void main_window::endRemoving(){
+    block(false);
+    ui->lineEdit->setDisabled(false);
+    clear();
+}
+
 
 void main_window::updateFile(QString path){
    QFile fl(path);
    if(!fl.exists()) return;
+   block(true);
    TrigramsSearcher localSearcher(path,trigramsRepository,watcher);
    trigramsRepository->insertFile(path,localSearcher.getFileTrigrams());
    if(ui->textViewer->getFilePath() == path){
        ui->textViewer->openFile(path);
        QMessageBox::warning(this, "Update",QString("File \n\n %1 \n\n was updated").arg(path), QMessageBox::Ok);
    }
+   block(false);
 }
 
 void main_window::updateDirectory(QString dir){
-   removeDirectory(dir);
    if (QMessageBox::warning(this, "Changing",
                            QString("%1 \n\n changed. Do you want to reindex it?").arg(dir),
-                           QMessageBox::Yes | QMessageBox::Cancel) == QMessageBox::Yes){
-        addFileDirectory(dir);
+                           QMessageBox::Yes | QMessageBox::Reset) == QMessageBox::Yes){
+     removeDirectory(dir);
+     addFileDirectory(dir);
+   } else{
+     removeDirectory(dir);
    }
 
 }

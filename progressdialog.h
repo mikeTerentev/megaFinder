@@ -20,8 +20,9 @@ public:
 public slots:
     void stopSearch();
     void update();
-
+    void setRange(int max);
 private:
+     int amount = 0;
      size_t  num = 0;
     Ui::ProgressDialog *ui;
     QThread* searchThread;
