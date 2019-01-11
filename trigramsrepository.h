@@ -14,9 +14,9 @@ class TrigramsRepository : public QObject
 Q_OBJECT
 
 public:
-
+    const int  BUFFER_SZ =  4096;
     TrigramsRepository();
-
+    bool  contains(const QString &path,QString qpattern);
     const QMap<QString,QMap<QString,QSet<uint64_t>>>& getTrigramData(){
         return trigramsData;
     }

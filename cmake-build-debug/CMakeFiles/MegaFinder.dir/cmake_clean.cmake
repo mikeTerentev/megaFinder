@@ -1,7 +1,10 @@
 file(REMOVE_RECURSE
+  "Tests_autogen"
+  "CMakeFiles/Tests_autogen.dir/AutogenOldSettings.txt"
+  "Run_autogen"
+  "CMakeFiles/Run_autogen.dir/AutogenOldSettings.txt"
   "MegaFinder_autogen"
   "CMakeFiles/MegaFinder_autogen.dir/AutogenOldSettings.txt"
-  "CMakeFiles/MegaFinder.dir/main.cpp.o"
   "CMakeFiles/MegaFinder.dir/mainwindow.cpp.o"
   "CMakeFiles/MegaFinder.dir/dirlist.cpp.o"
   "CMakeFiles/MegaFinder.dir/mytreewidget.cpp.o"
@@ -12,8 +15,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/MegaFinder.dir/trigramsrepository.cpp.o"
   "CMakeFiles/MegaFinder.dir/trigramssearcher.cpp.o"
   "CMakeFiles/MegaFinder.dir/MegaFinder_autogen/mocs_compilation.cpp.o"
-  "MegaFinder.pdb"
-  "MegaFinder"
+  "libMegaFinder.pdb"
+  "libMegaFinder.a"
 )
 
 # Per-language clean rules from dependency scanning.

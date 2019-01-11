@@ -23,8 +23,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_main_window_t {
-    QByteArrayData data[24];
-    char stringdata0[287];
+    QByteArrayData data[27];
+    char stringdata0[319];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,11 +52,14 @@ QT_MOC_LITERAL(15, 159, 6), // "curDir"
 QT_MOC_LITERAL(16, 166, 16), // "addFileDirectory"
 QT_MOC_LITERAL(17, 183, 4), // "prev"
 QT_MOC_LITERAL(18, 188, 14), // "foundDuplicate"
-QT_MOC_LITERAL(19, 203, 14), // "finishedSearch"
-QT_MOC_LITERAL(20, 218, 40), // "QVector<QPair<QString,QList<Q..."
-QT_MOC_LITERAL(21, 259, 4), // "info"
-QT_MOC_LITERAL(22, 264, 17), // "show_about_dialog"
-QT_MOC_LITERAL(23, 282, 4) // "next"
+QT_MOC_LITERAL(19, 203, 15), // "removeDirectory"
+QT_MOC_LITERAL(20, 219, 14), // "finishedSearch"
+QT_MOC_LITERAL(21, 234, 40), // "QVector<QPair<QString,QList<Q..."
+QT_MOC_LITERAL(22, 275, 4), // "info"
+QT_MOC_LITERAL(23, 280, 3), // "fin"
+QT_MOC_LITERAL(24, 284, 11), // "endRemoving"
+QT_MOC_LITERAL(25, 296, 17), // "show_about_dialog"
+QT_MOC_LITERAL(26, 314, 4) // "next"
 
     },
     "main_window\0stopSearching\0\0stopIndexing\0"
@@ -64,9 +67,10 @@ QT_MOC_LITERAL(23, 282, 4) // "next"
     "changePattern\0find\0fileClicked\0"
     "QTreeWidgetItem*\0widget\0openFile\0"
     "addPreprocessedDir\0curDir\0addFileDirectory\0"
-    "prev\0foundDuplicate\0finishedSearch\0"
-    "QVector<QPair<QString,QList<QString> > >\0"
-    "info\0show_about_dialog\0next"
+    "prev\0foundDuplicate\0removeDirectory\0"
+    "finishedSearch\0QVector<QPair<QString,QList<QString> > >\0"
+    "info\0fin\0endRemoving\0show_about_dialog\0"
+    "next"
 };
 #undef QT_MOC_LITERAL
 
@@ -76,7 +80,7 @@ static const uint qt_meta_data_main_window[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      16,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -84,24 +88,26 @@ static const uint qt_meta_data_main_window[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    0,   94,    2, 0x06 /* Public */,
-       3,    0,   95,    2, 0x06 /* Public */,
+       1,    0,  104,    2, 0x06 /* Public */,
+       3,    0,  105,    2, 0x06 /* Public */,
 
  // slots: name, argc, parameters, tag, flags
-       4,    1,   96,    2, 0x0a /* Public */,
-       6,    1,   99,    2, 0x0a /* Public */,
-       8,    0,  102,    2, 0x0a /* Public */,
-       9,    0,  103,    2, 0x0a /* Public */,
-      10,    1,  104,    2, 0x0a /* Public */,
-      13,    1,  107,    2, 0x0a /* Public */,
-      14,    1,  110,    2, 0x0a /* Public */,
-      16,    1,  113,    2, 0x0a /* Public */,
-      16,    0,  116,    2, 0x2a /* Public | MethodCloned */,
-      17,    0,  117,    2, 0x0a /* Public */,
-      18,    1,  118,    2, 0x0a /* Public */,
-      19,    1,  121,    2, 0x0a /* Public */,
-      22,    0,  124,    2, 0x08 /* Private */,
-      23,    0,  125,    2, 0x08 /* Private */,
+       4,    1,  106,    2, 0x0a /* Public */,
+       6,    1,  109,    2, 0x0a /* Public */,
+       8,    0,  112,    2, 0x0a /* Public */,
+       9,    0,  113,    2, 0x0a /* Public */,
+      10,    1,  114,    2, 0x0a /* Public */,
+      13,    1,  117,    2, 0x0a /* Public */,
+      14,    1,  120,    2, 0x0a /* Public */,
+      16,    1,  123,    2, 0x0a /* Public */,
+      16,    0,  126,    2, 0x2a /* Public | MethodCloned */,
+      17,    0,  127,    2, 0x0a /* Public */,
+      18,    1,  128,    2, 0x0a /* Public */,
+      19,    1,  131,    2, 0x0a /* Public */,
+      20,    2,  134,    2, 0x0a /* Public */,
+      24,    0,  139,    2, 0x0a /* Public */,
+      25,    0,  140,    2, 0x08 /* Private */,
+      26,    0,  141,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void,
@@ -119,7 +125,9 @@ static const uint qt_meta_data_main_window[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,    7,
-    QMetaType::Void, 0x80000000 | 20,   21,
+    QMetaType::Void, QMetaType::QString,    7,
+    QMetaType::Void, 0x80000000 | 21, QMetaType::Bool,   22,   23,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
 
@@ -145,9 +153,11 @@ void main_window::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 10: _t->addFileDirectory(); break;
         case 11: _t->prev(); break;
         case 12: _t->foundDuplicate((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 13: _t->finishedSearch((*reinterpret_cast< QVector<QPair<QString,QList<QString> > >(*)>(_a[1]))); break;
-        case 14: _t->show_about_dialog(); break;
-        case 15: _t->next(); break;
+        case 13: _t->removeDirectory((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 14: _t->finishedSearch((*reinterpret_cast< QVector<QPair<QString,QList<QString> > >(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 15: _t->endRemoving(); break;
+        case 16: _t->show_about_dialog(); break;
+        case 17: _t->next(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -194,13 +204,13 @@ int main_window::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 16)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 16;
+        _id -= 18;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 16)
+        if (_id < 18)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 16;
+        _id -= 18;
     }
     return _id;
 }

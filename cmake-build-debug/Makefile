@@ -39,10 +39,10 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = "/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4588.63/CLion.app/Contents/bin/cmake/mac/bin/cmake"
+CMAKE_COMMAND = "/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/CLion.app/Contents/bin/cmake/mac/bin/cmake"
 
 # The command to remove a file.
-RM = "/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4588.63/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E remove -f
+RM = "/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	"/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4588.63/CLion.app/Contents/bin/cmake/mac/bin/cmake" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	"/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/CLion.app/Contents/bin/cmake/mac/bin/cmake" -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : rebuild_cache
 
 # Special rule for the target rebuild_cache
@@ -70,7 +70,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	"/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4588.63/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E echo No\ interactive\ CMake\ dialog\ available.
+	"/Users/miketerentyev/Library/Application Support/JetBrains/Toolbox/apps/CLion/ch-0/183.4886.39/CLion.app/Contents/bin/cmake/mac/bin/cmake" -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -111,6 +111,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named Tests
+
+# Build rule for target.
+Tests: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Tests
+.PHONY : Tests
+
+# fast build rule for target.
+Tests/fast:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/build
+.PHONY : Tests/fast
+
+#=============================================================================
+# Target rules for targets named Run
+
+# Build rule for target.
+Run: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Run
+.PHONY : Run
+
+# fast build rule for target.
+Run/fast:
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/build
+.PHONY : Run/fast
+
+#=============================================================================
 # Target rules for targets named MegaFinder
 
 # Build rule for target.
@@ -122,6 +148,32 @@ MegaFinder: cmake_check_build_system
 MegaFinder/fast:
 	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/build
 .PHONY : MegaFinder/fast
+
+#=============================================================================
+# Target rules for targets named Tests_autogen
+
+# Build rule for target.
+Tests_autogen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Tests_autogen
+.PHONY : Tests_autogen
+
+# fast build rule for target.
+Tests_autogen/fast:
+	$(MAKE) -f CMakeFiles/Tests_autogen.dir/build.make CMakeFiles/Tests_autogen.dir/build
+.PHONY : Tests_autogen/fast
+
+#=============================================================================
+# Target rules for targets named Run_autogen
+
+# Build rule for target.
+Run_autogen: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Run_autogen
+.PHONY : Run_autogen
+
+# fast build rule for target.
+Run_autogen/fast:
+	$(MAKE) -f CMakeFiles/Run_autogen.dir/build.make CMakeFiles/Run_autogen.dir/build
+.PHONY : Run_autogen/fast
 
 #=============================================================================
 # Target rules for targets named MegaFinder_autogen
@@ -162,6 +214,60 @@ MegaFinder_autogen/mocs_compilation.s: MegaFinder_autogen/mocs_compilation.cpp.s
 MegaFinder_autogen/mocs_compilation.cpp.s:
 	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/MegaFinder_autogen/mocs_compilation.cpp.s
 .PHONY : MegaFinder_autogen/mocs_compilation.cpp.s
+
+Run_autogen/mocs_compilation.o: Run_autogen/mocs_compilation.cpp.o
+
+.PHONY : Run_autogen/mocs_compilation.o
+
+# target to build an object file
+Run_autogen/mocs_compilation.cpp.o:
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/Run_autogen/mocs_compilation.cpp.o
+.PHONY : Run_autogen/mocs_compilation.cpp.o
+
+Run_autogen/mocs_compilation.i: Run_autogen/mocs_compilation.cpp.i
+
+.PHONY : Run_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+Run_autogen/mocs_compilation.cpp.i:
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/Run_autogen/mocs_compilation.cpp.i
+.PHONY : Run_autogen/mocs_compilation.cpp.i
+
+Run_autogen/mocs_compilation.s: Run_autogen/mocs_compilation.cpp.s
+
+.PHONY : Run_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+Run_autogen/mocs_compilation.cpp.s:
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/Run_autogen/mocs_compilation.cpp.s
+.PHONY : Run_autogen/mocs_compilation.cpp.s
+
+Tests_autogen/mocs_compilation.o: Tests_autogen/mocs_compilation.cpp.o
+
+.PHONY : Tests_autogen/mocs_compilation.o
+
+# target to build an object file
+Tests_autogen/mocs_compilation.cpp.o:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Tests_autogen/mocs_compilation.cpp.o
+.PHONY : Tests_autogen/mocs_compilation.cpp.o
+
+Tests_autogen/mocs_compilation.i: Tests_autogen/mocs_compilation.cpp.i
+
+.PHONY : Tests_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+Tests_autogen/mocs_compilation.cpp.i:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Tests_autogen/mocs_compilation.cpp.i
+.PHONY : Tests_autogen/mocs_compilation.cpp.i
+
+Tests_autogen/mocs_compilation.s: Tests_autogen/mocs_compilation.cpp.s
+
+.PHONY : Tests_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+Tests_autogen/mocs_compilation.cpp.s:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/Tests_autogen/mocs_compilation.cpp.s
+.PHONY : Tests_autogen/mocs_compilation.cpp.s
 
 dirlist.o: dirlist.cpp.o
 
@@ -223,7 +329,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/main.cpp.o
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -232,7 +338,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/main.cpp.i
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -241,7 +347,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/main.cpp.s
+	$(MAKE) -f CMakeFiles/Run.dir/build.make CMakeFiles/Run.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 mainwindow.o: mainwindow.cpp.o
@@ -352,6 +458,87 @@ tbufferedreader.cpp.s:
 	$(MAKE) -f CMakeFiles/MegaFinder.dir/build.make CMakeFiles/MegaFinder.dir/tbufferedreader.cpp.s
 .PHONY : tbufferedreader.cpp.s
 
+tests/gtest/gtest-all.o: tests/gtest/gtest-all.cc.o
+
+.PHONY : tests/gtest/gtest-all.o
+
+# target to build an object file
+tests/gtest/gtest-all.cc.o:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest-all.cc.o
+.PHONY : tests/gtest/gtest-all.cc.o
+
+tests/gtest/gtest-all.i: tests/gtest/gtest-all.cc.i
+
+.PHONY : tests/gtest/gtest-all.i
+
+# target to preprocess a source file
+tests/gtest/gtest-all.cc.i:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest-all.cc.i
+.PHONY : tests/gtest/gtest-all.cc.i
+
+tests/gtest/gtest-all.s: tests/gtest/gtest-all.cc.s
+
+.PHONY : tests/gtest/gtest-all.s
+
+# target to generate assembly for a file
+tests/gtest/gtest-all.cc.s:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest-all.cc.s
+.PHONY : tests/gtest/gtest-all.cc.s
+
+tests/gtest/gtest_main.o: tests/gtest/gtest_main.cc.o
+
+.PHONY : tests/gtest/gtest_main.o
+
+# target to build an object file
+tests/gtest/gtest_main.cc.o:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest_main.cc.o
+.PHONY : tests/gtest/gtest_main.cc.o
+
+tests/gtest/gtest_main.i: tests/gtest/gtest_main.cc.i
+
+.PHONY : tests/gtest/gtest_main.i
+
+# target to preprocess a source file
+tests/gtest/gtest_main.cc.i:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest_main.cc.i
+.PHONY : tests/gtest/gtest_main.cc.i
+
+tests/gtest/gtest_main.s: tests/gtest/gtest_main.cc.s
+
+.PHONY : tests/gtest/gtest_main.s
+
+# target to generate assembly for a file
+tests/gtest/gtest_main.cc.s:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/gtest/gtest_main.cc.s
+.PHONY : tests/gtest/gtest_main.cc.s
+
+tests/testing.o: tests/testing.cpp.o
+
+.PHONY : tests/testing.o
+
+# target to build an object file
+tests/testing.cpp.o:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/testing.cpp.o
+.PHONY : tests/testing.cpp.o
+
+tests/testing.i: tests/testing.cpp.i
+
+.PHONY : tests/testing.i
+
+# target to preprocess a source file
+tests/testing.cpp.i:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/testing.cpp.i
+.PHONY : tests/testing.cpp.i
+
+tests/testing.s: tests/testing.cpp.s
+
+.PHONY : tests/testing.s
+
+# target to generate assembly for a file
+tests/testing.cpp.s:
+	$(MAKE) -f CMakeFiles/Tests.dir/build.make CMakeFiles/Tests.dir/tests/testing.cpp.s
+.PHONY : tests/testing.cpp.s
+
 textviewer.o: textviewer.cpp.o
 
 .PHONY : textviewer.o
@@ -441,11 +628,21 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... Tests"
+	@echo "... Run"
 	@echo "... MegaFinder"
+	@echo "... Tests_autogen"
+	@echo "... Run_autogen"
 	@echo "... MegaFinder_autogen"
 	@echo "... MegaFinder_autogen/mocs_compilation.o"
 	@echo "... MegaFinder_autogen/mocs_compilation.i"
 	@echo "... MegaFinder_autogen/mocs_compilation.s"
+	@echo "... Run_autogen/mocs_compilation.o"
+	@echo "... Run_autogen/mocs_compilation.i"
+	@echo "... Run_autogen/mocs_compilation.s"
+	@echo "... Tests_autogen/mocs_compilation.o"
+	@echo "... Tests_autogen/mocs_compilation.i"
+	@echo "... Tests_autogen/mocs_compilation.s"
 	@echo "... dirlist.o"
 	@echo "... dirlist.i"
 	@echo "... dirlist.s"
@@ -467,6 +664,15 @@ help:
 	@echo "... tbufferedreader.o"
 	@echo "... tbufferedreader.i"
 	@echo "... tbufferedreader.s"
+	@echo "... tests/gtest/gtest-all.o"
+	@echo "... tests/gtest/gtest-all.i"
+	@echo "... tests/gtest/gtest-all.s"
+	@echo "... tests/gtest/gtest_main.o"
+	@echo "... tests/gtest/gtest_main.i"
+	@echo "... tests/gtest/gtest_main.s"
+	@echo "... tests/testing.o"
+	@echo "... tests/testing.i"
+	@echo "... tests/testing.s"
 	@echo "... textviewer.o"
 	@echo "... textviewer.i"
 	@echo "... textviewer.s"

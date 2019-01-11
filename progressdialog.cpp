@@ -9,7 +9,7 @@ ProgressDialog::ProgressDialog(QThread* searchThread, QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->stopSearchButton, SIGNAL(clicked()), this, SLOT(stopSearch()));
-    //ui->progressBar->setValue(0);
+    ui->progressBar->setValue(0);
     ui->label->setText("Scaning directory..");
 }
 

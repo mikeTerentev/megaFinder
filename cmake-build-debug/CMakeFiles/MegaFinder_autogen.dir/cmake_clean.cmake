@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "Tests_autogen"
+  "CMakeFiles/Tests_autogen.dir/AutogenOldSettings.txt"
+  "Run_autogen"
+  "CMakeFiles/Run_autogen.dir/AutogenOldSettings.txt"
   "MegaFinder_autogen"
   "CMakeFiles/MegaFinder_autogen.dir/AutogenOldSettings.txt"
   "CMakeFiles/MegaFinder_autogen"

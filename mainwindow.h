@@ -59,6 +59,8 @@ signals:
     void stopIndexing();
 private:
     QThread thread;
+    QString processingDir;
+    bool isUpdateProcess = false;
     QFutureWatcher<void> result;
     TrigramsSearcher* searcher;
     QFileSystemWatcher* watcher;

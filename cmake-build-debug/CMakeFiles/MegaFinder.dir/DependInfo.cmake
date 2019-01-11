@@ -7,7 +7,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/MegaFinder_autogen/mocs_compilation.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/MegaFinder_autogen/mocs_compilation.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/dirlist.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/dirlist.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/fileindexer.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/fileindexer.cpp.o"
-  "/Users/miketerentyev/itmo/2-year/MegaFinder/main.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/main.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/mainwindow.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/mainwindow.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/mytreewidget.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/mytreewidget.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/progressdialog.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/progressdialog.cpp.o"
@@ -16,7 +15,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/Users/miketerentyev/itmo/2-year/MegaFinder/trigramsrepository.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/trigramsrepository.cpp.o"
   "/Users/miketerentyev/itmo/2-year/MegaFinder/trigramssearcher.cpp" "/Users/miketerentyev/itmo/2-year/MegaFinder/cmake-build-debug/CMakeFiles/MegaFinder.dir/trigramssearcher.cpp.o"
   )
-set(CMAKE_CXX_COMPILER_ID "Clang")
+set(CMAKE_CXX_COMPILER_ID "AppleClang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_CXX
@@ -41,7 +40,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/Users/miketerentyev/Qt/5.11.2/clang_64/lib/QtCore.framework"
   "/Users/miketerentyev/Qt/5.11.2/clang_64/lib/QtCore.framework/Headers"
   "/Users/miketerentyev/Qt/5.11.2/clang_64/./mkspecs/macx-clang"
-  "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/OpenGL.framework/Headers"
+  "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/OpenGL.framework/Headers"
   "/Users/miketerentyev/Qt/5.11.2/clang_64/lib/QtQuickControls2.framework"
   "/Users/miketerentyev/Qt/5.11.2/clang_64/lib/QtQuickControls2.framework/Headers"
   "/Users/miketerentyev/Qt/5.11.2/clang_64/lib/QtQuick.framework"

@@ -46,7 +46,7 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern
          QList<QString> filesList;
          for (auto curFile = curDir.value().begin(); curFile != curDir.value().end(); curFile++){
              if (QThread::currentThread()->isInterruptionRequested()){
-                 qDebug()<<"---->InterruptionRequested<----";
+                 qDebug()<<"====>InterruptionRequested<====";
                 return result;
              }
              n++;
@@ -60,30 +60,22 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern
                  }
              }
              else {
-                  isMatch = false;
-                  uint64_t patternTrigram = indexer.makeTrigram(pattern);
-                  for (uint64_t fileTrigram : curFile.value()){
-
-                      if (((fileTrigram>>8) == patternTrigram) || ((fileTrigram>>16) == patternTrigram)){
-                         isMatch = true;
-                         continue;
-                      }
-                  }
+                  isMatch = true;
              }
              if (isMatch){
-                /* QFile file(filePath);
+                 /*QFile file(filePath);
                  QTextStream stream(&file);
-
-                 std::string std_pattern = pattern.toStdString();
                  std::string std_text = stream.readAll().toStdString();
                  auto it = std::search(std_text.begin(), std_text.end(),
                                     std::boyer_moore_searcher(
                                        std_pattern.begin(), std_pattern.end()));
                  if (it == std_text.end()){
                      continue;
-                 }*/
-                 filesList.append(filePath);
-                 //qDebug()<<"Found:"<<filePath;
+                 }
+                 */
+                 if (contains(filePath,qpattern)) {
+                     filesList.append(filePath);
+                 }
              }
              emit fileDone(n);
           }
@@ -100,4 +92,28 @@ QString TrigramsRepository::findDirByPath(QString path){
     }
     qDebug()<<"LOGICAL ERROR NOT FOUND DIR BY PATH";
     return "";
+}
+
+
+bool TrigramsRepository::contains(const QString &path, QString qpattern) {
+    QFile file(path);
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream stream(&file);
+        QString buffer;
+        while (buffer.append(stream.read(BUFFER_SZ)).size() >= qpattern.size()) {
+            for (int i = 0; i < BUFFER_SZ - qpattern.size() + 1; i++) {
+                int j = 0;
+                while (qpattern[j] == buffer[i + j] && j < qpattern.size()) {
+                    j++;
+                }
+                if (j == qpattern.size()) {
+                    file.close();
+                    return true;
+                }
+            }
+            buffer = buffer.mid(buffer.size() - qpattern.size() + 1, qpattern.size() - 1);
+        }
+    }
+    file.close();
+    return false;
 }

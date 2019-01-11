@@ -43,6 +43,7 @@ main_window::main_window(QWidget *parent)
     connect(watcher,SIGNAL(fileChanged(QString)),this, SLOT(updateFile(QString)));
     connect(watcher,SIGNAL(directoryChanged(QString)),this, SLOT(updateDirectory(QString)));
     trigramsRepository = new TrigramsRepository();
+    ui->progressBar->setValue(0);
     thread.start();
        thread.quit();
        thread.wait();
@@ -64,15 +65,17 @@ void main_window::changePattern(){
     find();
 }
 void main_window::findNextFile(){
+    if(!thread.isFinished()) return;
     ui->textViewer->search();
     next();
     QFileInfo f(ui->textViewer->getFilePath());
-    ui->fileNameLabel->setText("File :" + f.completeBaseName() + f.completeSuffix());
+    ui->fileNameLabel->setText("File :" + f.completeBaseName() +"."+ f.completeSuffix());
     ui->foundAmountLabel->setText(QString::number(ui->textViewer->getAmount()) + " usages");
 }
 
 void main_window::find(){
     if(!thread.isFinished()){
+     thread.requestInterruption();
      thread.quit();
      thread.wait();
     }
@@ -80,11 +83,10 @@ void main_window::find(){
         return;
     }
     clear();
-    block(true);
     ui->textViewer->setLine(pattern);
     searcher = new  TrigramsSearcher(pattern,trigramsRepository,watcher);
     searcher->setPattern(pattern);
-
+     ui->progressBar->reset();
     searcher->moveToThread(&thread);
     connect(&thread, &QThread::finished, searcher, &QObject::deleteLater);
     connect(&thread, SIGNAL (started()), searcher, SLOT (find()));
@@ -92,39 +94,46 @@ void main_window::find(){
     connect(trigramsRepository, SIGNAL(fileDone(int)), ui->progressBar, SLOT(setValue(int)));
     connect(searcher, SIGNAL(finished(QVector<QPair<QString,QList<QString>>>,bool)), this, SLOT(finishedSearch(QVector<QPair<QString,QList<QString>>>,bool)));
     //connect(searcher, SIGNAL(finished(QVector<QPair<QString,QList<QString>>>,bool)), &thread, SLOT(quit()));
+   // block(true);
+    qDebug()<<"ON<----";
     thread.start();
 }
 
 void main_window::finishedSearch(QVector<QPair<QString,QList<QString>>> info,bool fin){
-     block(false);
-     if(!fin) return;
-     if(info.isEmpty()) return;
+    ui->progressBar->setValue(0);
+     if (!fin || info.isEmpty()) {
+         return;
+     }
      ui->treeWidget->addFilesFromDirs(info);
      thread.quit();
      thread.wait();
+    // block(false);
+
 }
 
 void main_window::prev(){
+     if(!thread.isFinished()) return;
      ui->textViewer->prev();
      qDebug()<<ui->textViewer->getCurrentUsage()<<" "<<ui->textViewer->getAmount();
 }
 
 void main_window::next(){
+     if(!thread.isFinished()) return;
     ui->textViewer->next();
     qDebug()<<ui->textViewer->getCurrentUsage()<<" "<<ui->textViewer->getAmount();
 }
 
 void main_window::block(bool isEnable){
-    ui->lineEdit->setDisabled(isEnable);
-    ui->addFileButton->setDisabled(isEnable);
-    ui->prevButton->setDisabled(isEnable);
-    ui->nextButton->setDisabled(isEnable);
-    ui->dirWidget->setDisabled(isEnable);
-    ui->textViewer->setDisabled(isEnable);
-    ui->treeWidget->setDisabled(isEnable);
+    ui->addFileButton->setEnabled(!isEnable);
+    ui->prevButton->setEnabled(!isEnable);
+    ui->nextButton->setEnabled(!isEnable);
+    ui->dirWidget->setEnabled(!isEnable);
+    ui->textViewer->setEnabled(!isEnable);
+    ui->treeWidget->setEnabled(!isEnable);
 }
 
 void main_window::addFileDirectory(QString dir){
+     if(!thread.isFinished()) return;
     clear();
     if(dir.isEmpty()){
         dir = QFileDialog::getExistingDirectory(this, "Select Directory for Scanning",QString(), QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
@@ -162,6 +171,7 @@ void main_window::foundDuplicate(QString dir){
 }
 
 void main_window::removeDirectory(const QString dir){
+    if(!thread.isFinished()) return;
     ui->dirWidget->deleteDir(dir);
     ui->treeWidget->deleteDir(dir);
     ui->progressBar->setRange(0,trigramsRepository->getTrigramData()[dir].size());
@@ -183,10 +193,15 @@ void main_window::endRemoving(){
     block(false);
     ui->lineEdit->setDisabled(false);
     clear();
+    if (isUpdateProcess){
+        addFileDirectory(processingDir);
+        isUpdateProcess = false;
+    }
 }
 
 
 void main_window::updateFile(QString path){
+   if(!thread.isFinished()) return;
    QFile fl(path);
    if(!fl.exists()) return;
    block(true);
@@ -200,15 +215,10 @@ void main_window::updateFile(QString path){
 }
 
 void main_window::updateDirectory(QString dir){
-   if (QMessageBox::warning(this, "Changing",
-                           QString("%1 \n\n changed. Do you want to reindex it?").arg(dir),
-                           QMessageBox::Yes | QMessageBox::Reset) == QMessageBox::Yes){
-     removeDirectory(dir);
-     addFileDirectory(dir);
-   } else{
-     removeDirectory(dir);
-   }
-
+     if(!thread.isFinished()) return;
+    processingDir = dir;
+    isUpdateProcess = true;
+    removeDirectory(dir);
 }
 
 
@@ -219,6 +229,7 @@ void main_window::clear(){
     ui->fileNameLabel->clear();
 }
 void main_window::fileClicked(QTreeWidgetItem * widget){
+     if(!thread.isFinished()) return;
     ui->treeWidget->fileSelected(widget);
     if ( widget->text(0).isEmpty()){
         return;
@@ -227,6 +238,7 @@ void main_window::fileClicked(QTreeWidgetItem * widget){
 }
 
 void main_window::openFile(QString path){
+     if(!thread.isFinished()) return;
     QFileInfo f(path);
     if(f.isDir()) return;
     ui->textViewer->openFile(path);

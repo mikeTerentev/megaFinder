@@ -25,9 +25,9 @@
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QWidget>
-#include "ui/header/dirlist.h"
-#include "ui/header/mytreewidget.h"
-#include "ui/header/textviewer.h"
+#include "dirlist.h"
+#include "mytreewidget.h"
+#include "textviewer.h"
 
 QT_BEGIN_NAMESPACE
 

@@ -2,14 +2,14 @@
 
 
 void TrigramsSearcher::find(){
-    qDebug()<< "started";
+    qDebug()<< "=====>started<====";
     emit filesCounted(trigramsRepository->getFilesAmount());
     auto foundData = trigramsRepository->find(pattern);
     if (QThread::currentThread()->isInterruptionRequested()){
         emit finished(foundData,false);
         return;
     }
-    qDebug()<<"finished";
+    qDebug()<<"=====>finished<====";
     emit finished(foundData,true);
 }
 
@@ -21,7 +21,7 @@ void TrigramsSearcher::indexDir(){
     }
      qDebug()<<"add : "<< dir <<"Map size inc";
      int amount = 0;
-     QDirIterator pre_it(dir, QDir::Files | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
+     QDirIterator pre_it(dir, QDir::Files  | QDir::NoDotAndDotDot, QDirIterator::Subdirectories);
       while (pre_it.hasNext()) {
           pre_it.next();
           amount++;

@@ -15,6 +15,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 
@@ -24,14 +25,15 @@ class Ui_ProgressDialog
 {
 public:
     QGridLayout *gridLayout;
+    QHBoxLayout *horizontalLayout;
+    QSpacerItem *horizontalSpacer;
+    QLabel *label;
+    QSpacerItem *horizontalSpacer_2;
     QHBoxLayout *horizontalLayout_2;
     QSpacerItem *horizontalSpacer_3;
     QPushButton *stopSearchButton;
     QSpacerItem *horizontalSpacer_4;
-    QHBoxLayout *horizontalLayout;
-    QSpacerItem *horizontalSpacer;
-    QSpacerItem *horizontalSpacer_2;
-    QLabel *label;
+    QProgressBar *progressBar;
 
     void setupUi(QDialog *ProgressDialog)
     {
@@ -46,6 +48,24 @@ public:
         ProgressDialog->setMaximumSize(QSize(248, 88));
         gridLayout = new QGridLayout(ProgressDialog);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer);
+
+        label = new QLabel(ProgressDialog);
+        label->setObjectName(QStringLiteral("label"));
+
+        horizontalLayout->addWidget(label);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_2);
+
+
+        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
@@ -62,25 +82,13 @@ public:
         horizontalLayout_2->addItem(horizontalSpacer_4);
 
 
-        gridLayout->addLayout(horizontalLayout_2, 1, 0, 1, 1);
+        gridLayout->addLayout(horizontalLayout_2, 2, 0, 1, 1);
 
-        horizontalLayout = new QHBoxLayout();
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        progressBar = new QProgressBar(ProgressDialog);
+        progressBar->setObjectName(QStringLiteral("progressBar"));
+        progressBar->setValue(24);
 
-        horizontalLayout->addItem(horizontalSpacer);
-
-        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        horizontalLayout->addItem(horizontalSpacer_2);
-
-        label = new QLabel(ProgressDialog);
-        label->setObjectName(QStringLiteral("label"));
-
-        horizontalLayout->addWidget(label);
-
-
-        gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+        gridLayout->addWidget(progressBar, 1, 0, 1, 1);
 
 
         retranslateUi(ProgressDialog);
@@ -91,8 +99,8 @@ public:
     void retranslateUi(QDialog *ProgressDialog)
     {
         ProgressDialog->setWindowTitle(QApplication::translate("ProgressDialog", "Dialog", nullptr));
-        stopSearchButton->setText(QApplication::translate("ProgressDialog", "Stop indexing", nullptr));
         label->setText(QString());
+        stopSearchButton->setText(QApplication::translate("ProgressDialog", "Stop indexing", nullptr));
     } // retranslateUi
 
 };
