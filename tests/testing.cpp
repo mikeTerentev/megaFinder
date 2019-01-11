@@ -42,7 +42,7 @@ TEST(file_count_correctness, hidden_files) {
     TrigramsSearcher searcher(dir + "count/hidden-files", &repository, &watcher);
     searcher.indexDir();
     EXPECT_TRUE(repository.getTrigramData().size() == 1);
-    EXPECT_TRUE(repository.getFilesAmount() == 3);
+    EXPECT_TRUE(repository.getFilesAmount() == 0);
 }
 
 
@@ -52,7 +52,7 @@ TEST(file_count_correctness, count_tree) {
     TrigramsSearcher searcher(dir + "count/", &repository, &watcher);
     searcher.indexDir();
     EXPECT_TRUE(repository.getTrigramData().size() == 1);
-    EXPECT_TRUE(repository.getFilesAmount() == 7);
+    EXPECT_TRUE(repository.getFilesAmount() == 4);
 }
 
 TEST(permission_check, no_permission) {
@@ -149,6 +149,8 @@ TEST(remove,remove){
     QFileSystemWatcher watcher;
     TrigramsSearcher searcher(dir + "count", &repository, &watcher);
     searcher.indexDir();
+    searcher.removeDirectory();
+    EXPECT_TRUE(repository.getTrigramData().size() == 0);
 }
 
 TEST(easy, empty) {

@@ -63,19 +63,16 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern
                   isMatch = true;
              }
              if (isMatch){
-                 /*QFile file(filePath);
+                 QFile file(filePath);
                  QTextStream stream(&file);
                  std::string std_text = stream.readAll().toStdString();
                  auto it = std::search(std_text.begin(), std_text.end(),
                                     std::boyer_moore_searcher(
-                                       std_pattern.begin(), std_pattern.end()));
+                                       pattern.begin(), pattern.end()));
                  if (it == std_text.end()){
                      continue;
                  }
-                 */
-                 if (contains(filePath,qpattern)) {
                      filesList.append(filePath);
-                 }
              }
              emit fileDone(n);
           }
