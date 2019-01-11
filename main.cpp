@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     main_window w;
     QCoreApplication::setApplicationVersion(QT_VERSION_STR);
     QCommandLineParser parser;
-    parser.setApplicationDescription("Mega Cleaner");
+    parser.setApplicationDescription("Mega Finder");
     parser.addHelpOption();
     parser.addVersionOption();
     w.show();

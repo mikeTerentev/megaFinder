@@ -45,10 +45,16 @@ main_window::main_window(QWidget *parent)
     trigramsRepository = new TrigramsRepository();
     ui->progressBar->setValue(0);
     thread.start();
-       thread.quit();
-       thread.wait();
+    thread.quit();
+    thread.wait();
+
+    disNextPrev(true);
 }
 
+void main_window::disNextPrev(bool x){
+    ui->nextButton->setDisabled(x);
+    ui->prevButton->setDisabled(x);
+}
 main_window::~main_window() {
     thread.quit();
     thread.wait();
@@ -57,10 +63,16 @@ main_window::~main_window() {
 }
 
 void main_window::changePattern(){
+     pattern = ui->lineEdit->toPlainText();
+    if(pattern == ""){
+         disNextPrev(true);
+         ui->treeWidget->clear();
+    } else{
+         disNextPrev(false);
+    }
     ui->foundAmountLabel->clear();
     ui->fileNameLabel->clear();
     ui->textViewer->clear();
-    pattern = ui->lineEdit->toPlainText();
     qDebug()<<"pattern changed to "<<pattern;
     find();
 }
@@ -172,6 +184,7 @@ void main_window::foundDuplicate(QString dir){
 
 void main_window::removeDirectory(const QString dir){
     if(!thread.isFinished()) return;
+    ui->lineEdit->clear();
     ui->dirWidget->deleteDir(dir);
     ui->treeWidget->deleteDir(dir);
     ui->progressBar->setRange(0,trigramsRepository->getTrigramData()[dir].size());
@@ -197,6 +210,9 @@ void main_window::endRemoving(){
         addFileDirectory(processingDir);
         isUpdateProcess = false;
     }
+    disNextPrev(true);
+    QMessageBox::information(this, "Directory deleted",QString("Directory deleted"), QMessageBox::Ok);
+
 }
 
 
@@ -216,6 +232,7 @@ void main_window::updateFile(QString path){
 
 void main_window::updateDirectory(QString dir){
      if(!thread.isFinished()) return;
+      disNextPrev(true);
     processingDir = dir;
     isUpdateProcess = true;
     removeDirectory(dir);

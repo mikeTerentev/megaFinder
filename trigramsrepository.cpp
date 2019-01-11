@@ -63,7 +63,7 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern
                   isMatch = true;
              }
              if (isMatch){
-                 QFile file(filePath);
+                 /*QFile file(filePath);
                  if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) continue ;
                  QTextStream stream(&file);
                  std::string std_text = stream.readAll().toStdString();
@@ -73,10 +73,10 @@ QVector<QPair<QString,QList<QString>>> TrigramsRepository::find(QString qpattern
                  if (it == std_text.end()){
                      continue;
                  }
-
-                //if (contains(filePath,qpattern)) {
+                */
+                if (contains(filePath,qpattern)) {
                      filesList.append(filePath);
-               //  }
+                 }
              }
              emit fileDone(n);
           }

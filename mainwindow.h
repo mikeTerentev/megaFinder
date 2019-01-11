@@ -36,6 +36,7 @@ public:
     void block(bool isBlock);
     public
     slots:
+    void disNextPrev(bool x);
     void updateFile(QString path);
     void updateDirectory(QString dir);
     void changePattern();
