@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 set(CMAKE_PREFIX_PATH /Users/miketerentyev/Qt/5.11.2/clang_64/)
 find_package(Qt5Widgets REQUIRED)
 
@@ -40,4 +40,4 @@ add_executable(Tests
         )
 target_link_libraries(Tests MegaFinder)
 target_link_libraries(Run MegaFinder)
-qt5_use_modules(MegaFinder Widgets QuickControls2)
+qt5_use_modules(MegaFinder Widgets)
