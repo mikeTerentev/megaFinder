@@ -125,23 +125,19 @@ TEST(finder_check, three_character) {
     EXPECT_TRUE(res[0].second.size() == 1);
 }
 
-TEST(finder_check, two_same) {
+TEST(finder_check, several) {
     TrigramsRepository repository;
     QFileSystemWatcher watcher;
-    TrigramsSearcher searcher(dir + "hash-checker/2same/", &repository, &watcher);
+    TrigramsSearcher searcher(dir + "hash-checker/", &repository, &watcher);
     searcher.indexDir();
     auto res = repository.find("M");
-    EXPECT_TRUE(res.size() == 1);
+    EXPECT_TRUE(res[0].second.size() == 3);
+    res = repository.find("AC");
     EXPECT_TRUE(res[0].second.size() == 1);
-    res = repository.find("ME");
-    EXPECT_TRUE(res.size() == 1);
+    res = repository.find("MEMAC");
     EXPECT_TRUE(res[0].second.size() == 1);
     res = repository.find("MEM");
-    EXPECT_TRUE(res.size() == 1);
-    EXPECT_TRUE(res[0].second.size() == 1);
-    res = repository.find("EM");
-    EXPECT_TRUE(res.size() == 1);
-    EXPECT_TRUE(res[0].second.size() == 1);
+    EXPECT_TRUE(res[0].second.size() == 3);
 }
 
 TEST(remove,remove){
@@ -150,7 +146,7 @@ TEST(remove,remove){
     TrigramsSearcher searcher(dir + "count", &repository, &watcher);
     searcher.indexDir();
     searcher.removeDirectory();
-    EXPECT_TRUE(repository.getTrigramData().size() == 0);
+    EXPECT_TRUE(repository.getTrigramData().empty());
 }
 
 TEST(easy, empty) {
